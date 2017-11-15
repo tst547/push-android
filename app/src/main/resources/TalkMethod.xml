@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Mapping>
+	<daoMap class="cn.link.core.CoreMethod">
+		<method name="start" invoke="start"/>
+		<method name="file" invoke="file"/>
+		<method name="down" invoke="downList"/>
+		<method name="startImage" invoke="startImage"/>
+		<method name="setArgs" invoke="closeSet"/>
+	</daoMap>
+</Mapping>

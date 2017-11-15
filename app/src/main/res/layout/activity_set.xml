@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <Spinner
+        android:id="@+id/sp_fliter"
+        android:layout_width="75dp"
+        android:layout_height="37dp"
+        android:layout_alignLeft="@+id/sp_frame"
+        android:layout_below="@+id/sp_frame"
+        android:layout_marginTop="92dp"
+        android:entries="@array/filter" />
+
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/sp_fliter"
+        android:layout_below="@+id/sp_fliter"
+        android:layout_marginTop="94dp"
+        android:background="@drawable/set_btn"
+        android:text="@string/app_btn_submit" />
+
+    <Spinner
+        android:id="@+id/sp_frame"
+        android:layout_width="75dp"
+        android:layout_height="37dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="62dp"
+        android:layout_marginTop="38dp"
+        android:layout_toRightOf="@+id/textView1"
+        android:entries="@array/frame" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/sp_frame"
+        android:layout_marginLeft="37dp"
+        android:text="@string/text_frame" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_alignTop="@+id/sp_fliter"
+        android:text="@string/text_filter" />
+	
+</RelativeLayout>
