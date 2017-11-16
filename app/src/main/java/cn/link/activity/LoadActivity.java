@@ -1,11 +1,9 @@
 package cn.link.activity;
 
 import java.io.Serializable;
-import java.util.List;
 
 import cn.link.box.ConstStrings;
 import cn.link.box.Key;
-import com.example.qr_codescan.MipcaActivityCapture;
 
 import android.content.Context;
 import android.content.Intent;
@@ -86,7 +84,8 @@ public class LoadActivity extends BaseActivity {
          * @param load
          */
         public RunNet(LoadActivity load) {
-            WifiManager wm = (WifiManager) load.getSystemService(Context.WIFI_SERVICE);//获取Android WIFI管理工具
+            WifiManager wm = (WifiManager) load.getApplicationContext()
+                    .getSystemService(Context.WIFI_SERVICE);//获取Android WIFI管理工具
             App.readWifiInfo(wm);//根据WIFI读取网络信息
         }
 
@@ -96,7 +95,6 @@ public class LoadActivity extends BaseActivity {
 
         /**
          * 在后台线程中尝试连接主机
-         * <p>
          * Android指定在该函数中执行耗时操作
          */
         @Override

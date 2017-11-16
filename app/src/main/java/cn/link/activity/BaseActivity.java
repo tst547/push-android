@@ -2,7 +2,6 @@ package cn.link.activity;
 
 
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.widget.Toast;
 import cn.link.box.App;
 import android.app.Activity;
@@ -13,11 +12,8 @@ import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 import cn.link.box.ConstStrings;
-import com.google.gson.Gson;
 
 public abstract class BaseActivity extends Activity{
-
-	protected Gson gson = new Gson();// 谷歌的JSON处理工具
 
 	protected Intent intent;//获取Activity传递过来的数据
 	

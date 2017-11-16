@@ -41,6 +41,7 @@ public class Scanner {
         byte[] buf = new byte[2048];
         DatagramPacket recv = new DatagramPacket(buf,buf.length);
         socket.receive(recv);
+        System.err.println(new String(recv.getData()));
         Base base = new Base();
         Base.BaseMsg<Base.IpMsg> type = base.new BaseMsg<>();
         Base.BaseMsg<Base.IpMsg> bean  = MyGson.getObject(

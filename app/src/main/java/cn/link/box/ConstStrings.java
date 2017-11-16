@@ -26,4 +26,7 @@ public class ConstStrings {
     public static final String Folder = "文件夹";//文件夹
 
     public static final String File = "文件";//文件
+    public static final String DownLoadCreateFailed = "任务创建失败，手机创建文件错误";
+    public static final String DownLoadFileOutPutFailed = "任务创建失败，文件输出流创建错误";
+    public static final String DownLoadStreamFailed = "任务失败，读写操作错误";
 }

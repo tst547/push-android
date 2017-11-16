@@ -1,19 +1,20 @@
 package cn.link.activity;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.*;
 import android.widget.*;
 import cn.link.box.App;
 import cn.link.box.ConstStrings;
 import cn.link.box.Key;
+import cn.link.net.download.DownLoadMsg;
+import cn.link.net.download.DownLoadTask;
+import cn.link.net.download.Progress;
 import cn.link.net.Base;
 
 public class FileActivity extends BaseActivity {
@@ -27,19 +28,6 @@ public class FileActivity extends BaseActivity {
         List<Base.File> fileList = (List<Base.File>) intent.getExtras().get(Key.FileListKey);
         // 加载该文件列表
         initList(fileList);
-        handler = new Handler(this.getBaseContext().getMainLooper()) {
-            @Override
-            public void handleMessage(Message msg) {
-            }
-        };
-
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIcon(R.drawable.ic_launcher);
-        progressDialog.setTitle(ConstStrings.DownLoad);
-        progressDialog.setMessage(ConstStrings.PlzWait);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);// 设置进度条对话框//样式（水平，旋转）
-        // 进度最大值
-        progressDialog.setMax(100);
     }
 
     /**
@@ -56,7 +44,7 @@ public class FileActivity extends BaseActivity {
             if (file.isDir) {
                 Intent intent = new Intent(FileActivity.this, FileActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(Key.FileListKey, (Serializable) App.getSession().getFileList(file.Path));
+                bundle.putSerializable(Key.FileListKey, (Serializable) App.getSession().getFileList(file.path));
                 intent.putExtras(bundle);
                 startActivity(intent);
                 return;
@@ -70,8 +58,23 @@ public class FileActivity extends BaseActivity {
                 .setItems(options, (dialog, which) -> {
                     if (which==0)
                         dialogShowMsg(ConstStrings.Detail, App.getFileMsg(file));
-                    if (which==1)
-                        openDialog();
+                    if (which==1){
+                        try {
+                            Progress progress = new Progress();
+                            progress.setMax(file.size);
+                            DownLoadMsg downLoadMsg = new DownLoadMsg();
+                            downLoadMsg.setBaseFile(file);
+                            downLoadMsg.setRunFlag(true);
+                            downLoadMsg.setId(System.currentTimeMillis());
+                            downLoadMsg.setProgress(progress);
+                            downLoadMsg.setFile(App.createFileByBaseFile(file));
+                            App.getSession().fileDownLoad(new DownLoadTask(view),downLoadMsg);
+                            App.downloadMsgs.add(downLoadMsg);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            toastMsg(getBaseContext(),ConstStrings.DownLoadCreateFailed);
+                        }
+                    }
                 })
                 .show();
             return true;
@@ -106,6 +109,7 @@ public class FileActivity extends BaseActivity {
         }
         return true;
     }
+
 
     class CustomAdapter extends BaseAdapter {
 
@@ -145,21 +149,6 @@ public class FileActivity extends BaseActivity {
                 image.setImageResource(R.drawable.icons_file);
             return view;
         }
-    }
-    private Handler handler;
-    private final int PRO = 10;
-    private ProgressDialog progressDialog;
-    /**
-     * 加载进度条对话框 根据与FileDownload共用的progress 对象来显示下载进度
-     */
-    public void openDialog() {
-        // 显示
-        progressDialog.show();
-        // 必须设置到show之后
-        progressDialog.setProgress(0);
-        // 线程
-        handler.sendEmptyMessage(PRO);
-
     }
 
 }

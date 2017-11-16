@@ -3,19 +3,15 @@ package cn.link.box;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ArrayBlockingQueue;
 
 import android.app.Activity;
 import android.net.DhcpInfo;
 import android.net.wifi.WifiManager;
 import android.os.Environment;
-import cn.link.beans.FileInfo;
 import cn.link.common.MyMath;
 import cn.link.common.WifiUtil;
-import cn.link.modular.DownLoader;
+import cn.link.net.download.DownLoadMsg;
 import cn.link.net.Base;
 import cn.link.net.Scanner;
 import cn.link.net.Session;
@@ -28,8 +24,10 @@ import cn.link.net.Session;
  */
 public class App {
 
-	public static final int FIND = 1;
-	public static final int SCAN = 2;
+	public static List<DownLoadMsg> downloadMsgs = new ArrayList<>();
+
+	public static String SdCardPath = Environment.getExternalStorageDirectory()
+			+ "/";
 	private static String broadcastAddr;// 广播地址
 	private static int ServerScannerPort = 22555; //扫描端口(广播使用)
 	private static String hostIp;// 主机IP
@@ -37,17 +35,9 @@ public class App {
 	private static String gateWay;// 网关IP
 	private static String DownLoadPath = "JCdownload";// 文件到手机SD卡上的指定目录
 
-
-	public static String SdCardPath = Environment.getExternalStorageDirectory()
-			+ "/";
-
-
-	private static List<Activity> activities = new ArrayList<Activity>();// 存放Activity
-	public static ArrayBlockingQueue<FileInfo> fi_queue = new ArrayBlockingQueue<FileInfo>(
-			100);
+	private static List<Activity> activities = new ArrayList<>();// 存放Activity
 
 	public static File path;
-
 
 	static {
 		path = new File(App.SdCardPath + App.DownLoadPath);
@@ -64,51 +54,30 @@ public class App {
 	}*/
 
 	/**
-	 * 根据FileInfo对象获取下载器
-	 *
+	 * 根据Base.File对象创建
+	 * 手机对应文件
 	 * @param fi
 	 * @return
 	 * @throws IOException
 	 */
-	/*
-	 * public static FileDownLoad getFileDownload(FileInfo fi) throws
-	 * IOException{ File path = new File(App.SD_path+App.downLoad_path);
-	 * if(!path.exists()){ path.mkdirs(); } File fl = new
-	 * File(path.getPath()+"/"+fi.getName()); if(!fl.exists()){
-	 * fl.createNewFile(); }else{ int num = 1; while(!fl.exists()){ fl = new
-	 * File(path.getPath()+"/"+"("+num+")"+fi.getName()); num++; }
-	 * fl.createNewFile(); } FileDownLoad fd = new FileDownLoad(App.HostIp(),
-	 * App.file_port,fi,fl); return fd; }
-	 */
-
-
-	public static File getFileByFileInfo(FileInfo fi) throws IOException {
+	public static File createFileByBaseFile(Base.File fi) throws IOException {
 		File path = new File(App.SdCardPath + App.DownLoadPath);
 		if (!path.exists()) {
 			path.mkdirs();
 		}
-		File fl = new File(path.getPath() + "/" + fi.getName());
+		File fl = new File(path.getPath() + "/" + fi.name);
 		if (!fl.exists()) {
 			fl.createNewFile();
 		} else {
 			int num = 1;
 			while (fl.exists()) {
 				fl = new File(path.getPath() + "/" + "(" + num + ")"
-						+ fi.getName());
+						+ fi.name);
 				num++;
 			}
 			fl.createNewFile();
 		}
 		return fl;
-	}
-
-	/**
-	 * 单例模式获取
-	 *
-	 * @return
-	 */
-	public static DownLoader getDownLoader() {
-		return DownLoader.getDownLoader();
 	}
 
 	/**
@@ -233,7 +202,7 @@ public class App {
 				.append(ConstStrings.LineSeparator)
 				.append(ConstStrings.FilePath)
 				.append(ConstStrings.Colon)
-				.append(file.Path)
+				.append(file.path)
 				.append(ConstStrings.LineSeparator)
 				.append(ConstStrings.FileType)
 				.append(ConstStrings.Colon)

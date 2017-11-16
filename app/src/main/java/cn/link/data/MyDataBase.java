@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 /**
- * Êı¾İ¿âsqlite½»»¥Àà
+ * æ•°æ®åº“sqliteäº¤äº’ç±»
  * 
  * @author hanyu
  * 
@@ -16,7 +16,7 @@ public class MyDataBase extends SQLiteOpenHelper {
 	
 	private static SQLiteDatabase base;
 
-	// ½¨±íÓï¾ä
+	// å»ºè¡¨è¯­å¥
 	public static final String CREATE_TABLE_TASK = "create table task("
 			+ "id integer primary key, " + "fipath text,"
 			+ "progress integer, " + " max integer,"+" isdir integer)";
@@ -31,7 +31,7 @@ public class MyDataBase extends SQLiteOpenHelper {
 	}
 
 	/**
-	 * ´´½¨Êı¾İ¿âµÄ·½·¨£¬Èç¹ûÊı¾İ¿âÒÑ´æÔÚÔò¸Ã·½·¨²»»áÖ´ĞĞ
+	 * åˆ›å»ºæ•°æ®åº“çš„æ–¹æ³•ï¼Œå¦‚æœæ•°æ®åº“å·²å­˜åœ¨åˆ™è¯¥æ–¹æ³•ä¸ä¼šæ‰§è¡Œ
 	 */
 	@Override
 	public void onCreate(SQLiteDatabase db) {
@@ -41,7 +41,7 @@ public class MyDataBase extends SQLiteOpenHelper {
 	}
 
 	/**
-	 * Êı¾İ¿âÉı¼¶µÄ·½·¨
+	 * æ•°æ®åº“å‡çº§çš„æ–¹æ³•
 	 */
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -50,7 +50,7 @@ public class MyDataBase extends SQLiteOpenHelper {
 	}
 	
 	/**
-	 * »ñÈ¡¿É¶ÁĞ´µÄÊı¾İ¿âÊµÀı
+	 * è·å–å¯è¯»å†™çš„æ•°æ®åº“å®ä¾‹
 	 */
 	@Override
 	public SQLiteDatabase getWritableDatabase() {

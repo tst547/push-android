@@ -7,7 +7,7 @@
         android:id="@+id/down_icon"
         android:layout_width="0dp"
         android:layout_height="55dp"
-        android:src="@drawable/folder_new2"
+        android:src="@drawable/icons_file"
         android:contentDescription="@string/app_picdes"
         android:layout_weight="1"/>
 

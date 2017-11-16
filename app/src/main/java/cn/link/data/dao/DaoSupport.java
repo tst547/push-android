@@ -11,7 +11,7 @@ public class DaoSupport{
 	protected long error = -1;
 	
 	public DaoSupport(){
-		this(App.getMyDataBase().getWritableDatabase());
+		this(null);
 	}
 	
 	protected DaoSupport(SQLiteDatabase db) {

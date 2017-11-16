@@ -1,14 +1,19 @@
 package cn.link.net;
 
 import cn.link.box.App;
+import cn.link.box.ConstStrings;
 import cn.link.common.MyGson;
+import cn.link.common.MyMath;
+import cn.link.net.download.DownLoadMsg;
+import cn.link.net.download.DownLoadTask;
+import cn.link.net.download.Progress;
 import okhttp3.*;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 /**
+ * 跟主机相关交互的操作
  * Created by hanyu on 2017/11/16 0016.
  */
 public class Session {
@@ -64,32 +69,65 @@ public class Session {
 
     /**
      * 文件下载
-     * @param filePath
+     * @param downLoadTask
      */
-    public void fileDL(String filePath){
-        OkHttpClient okHttpClient = new OkHttpClient();
-
-        RequestBody body = new FormBody.Builder()
-                .add("filePath", filePath)
-                .build();
-
-        Request request = new Request.Builder()
-                .url(urlBase+"/fileDL")
-                .post(body)
-                .build();
-
-        Call call = okHttpClient.newCall(request);
-        try {
-            Response response = call.execute();
-            BufferedInputStream bis = new BufferedInputStream(response.body().byteStream());
-            int read = 0;
-            while((read = bis.available())>0){
-                byte[] temp = new byte[read];
-                bis.read(temp);
+    public void fileDownLoad(DownLoadTask downLoadTask, DownLoadMsg downLoadMsg){
+        downLoadTask.setNetable((loadTask,msg,view)->{
+            Progress progress = msg.getProgress();
+            File file = msg.getFile();
+            FileOutputStream bos;
+            try {
+                bos = new FileOutputStream(file);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                msg.setRunFlag(false);
+                msg.setMsg(ConstStrings.DownLoadFileOutPutFailed);
+                return false;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+            OkHttpClient okHttpClient = new OkHttpClient();
+
+            RequestBody body = new FormBody.Builder()
+                    .add("filePath", msg.getBaseFile().path)
+                    .build();
+
+            Request request = new Request.Builder()
+                    .url(urlBase+"/fileDL")
+                    .post(body)
+                    .build();
+
+            Call call = okHttpClient.newCall(request);
+            try {
+                Response response = call.execute();
+                BufferedInputStream bis = new BufferedInputStream(response.body().byteStream());
+                int read;
+                while((read = bis.available())>0){
+                    byte[] temp = new byte[read];
+                    bis.read(temp);
+                    bos.write(temp);
+                    progress.setOffset(progress.getOffset()+read);
+                    progress.setCurrent(MyMath.divideMax100(progress.getOffset(),progress.getMax()));
+                    if (!msg.isRunFlag()){
+                        msg.setRunFlag(false);
+                        bis.close();
+                        break;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                msg.setRunFlag(false);
+                msg.setMsg(ConstStrings.DownLoadStreamFailed);
+                return false;
+            }finally {
+                try {
+                    bos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return true;
+        }).execute(downLoadMsg);
+
     }
 
     /**
