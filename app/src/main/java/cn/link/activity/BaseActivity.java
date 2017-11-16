@@ -1,6 +1,9 @@
 package cn.link.activity;
 
 
+import android.content.Context;
+import android.content.ContextWrapper;
+import android.widget.Toast;
 import cn.link.box.App;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -9,8 +12,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
+import cn.link.box.ConstStrings;
+import com.google.gson.Gson;
 
 public abstract class BaseActivity extends Activity{
+
+	protected Gson gson = new Gson();// 谷歌的JSON处理工具
 
 	protected Intent intent;//获取Activity传递过来的数据
 	
@@ -66,8 +73,18 @@ public abstract class BaseActivity extends Activity{
 		AlertDialog.Builder builder = new Builder(BaseActivity.this);
 		builder.setMessage(msg);
 		builder.setTitle(head);
-		builder.setPositiveButton("确认", (dialog, which) -> dialog.dismiss());
+		builder.setPositiveButton(ConstStrings.Confirm, (dialog, which) -> dialog.dismiss());
 		builder.create().show();
+	}
+
+	/**
+	 * 加载一条信息提示
+	 * @param context
+	 * @param msg
+	 */
+	protected void toastMsg(Context context, String msg){
+		Toast.makeText(context, msg, Toast.LENGTH_SHORT)
+				.show();
 	}
 
 }

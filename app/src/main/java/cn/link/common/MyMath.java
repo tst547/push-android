@@ -8,7 +8,7 @@ import java.text.DecimalFormat;
 public class MyMath {
 
 	/**
-	 * ¾«È·³ı·¨¼ÆËã
+	 * ç²¾ç¡®é™¤æ³•è®¡ç®—
 	 * @param divisor1
 	 * @param divisor2
 	 * @param format
@@ -22,9 +22,9 @@ public class MyMath {
 	}
 	
 	/**
-	 * ¾«È·¼ÆËãÕ¼±È ÒÔ100Îª×î´óÖµ
-	 * @param divisor1
-	 * @param divisor2
+	 * ç²¾ç¡®è®¡ç®—å æ¯” ä»¥100ä¸ºæœ€å¤§å€¼
+	 * @param current
+	 * @param max
 	 * @return
 	 */
 	public static int divideMax100(long current,long max){
@@ -40,7 +40,7 @@ public class MyMath {
 	}
 	
 	/**
-	 * ¾«È·¼Ó·¨¼ÆËã
+	 * ç²¾ç¡®åŠ æ³•è®¡ç®—
 	 * @param divisor1
 	 * @param divisor2
 	 * @return
@@ -52,7 +52,7 @@ public class MyMath {
 	}
 	
 	/**
-	 * ¾«È·¼õ·¨¼ÆËã
+	 * ç²¾ç¡®å‡æ³•è®¡ç®—
 	 * @param divisor1
 	 * @param divisor2
 	 * @return

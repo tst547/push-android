@@ -4,18 +4,17 @@
     android:layout_height="match_parent" >
 
     <TableRow> 
-
-        <ImageView 
+        <ImageView
             android:id="@+id/icon"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/folder_new2"
+            android:layout_height="match_parent"
+            android:src="@drawable/icons_folder"
             android:contentDescription="@string/app_picdes"/>
 
         <TextView 
             android:id="@+id/item_text"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="match_parent"/>
    
 	</TableRow>
 </TableLayout>

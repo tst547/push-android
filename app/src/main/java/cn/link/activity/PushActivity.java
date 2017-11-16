@@ -7,9 +7,5 @@ package cn.link.activity;
  */
 public class PushActivity extends BaseActivity{
 
-	@Override
-	public String invoke(String msg) {
-		return null;
-	}
 
 }

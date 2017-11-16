@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import cn.link.activity.R;
 import cn.link.common.MyMath;
+import com.daimajia.numberprogressbar.NumberProgressBar;
 
 public class ProgressAdapter extends ArrayAdapter<DownLoadTask>{
 	
@@ -33,7 +34,7 @@ public class ProgressAdapter extends ArrayAdapter<DownLoadTask>{
 		View view = LayoutInflater.from(getContext()).inflate(res, null);
 		ImageView img = (ImageView) view.findViewById(R.id.down_icon);
 		TextView text = (TextView) view.findViewById(R.id.down_item_text);
-		ProgressBar pro = (ProgressBar) view.findViewById(R.id.down_pro);
+		NumberProgressBar pro = (NumberProgressBar) view.findViewById(R.id.down_pro);
 		TextView pct = (TextView) view.findViewById(R.id.down_pct);
 		if(dt.getProgress().getFls().size()!=1){
 			img.setImageResource(R.drawable.folder_new2);

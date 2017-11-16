@@ -13,10 +13,12 @@ import android.net.DhcpInfo;
 import android.net.wifi.WifiManager;
 import android.os.Environment;
 import cn.link.beans.FileInfo;
+import cn.link.common.MyMath;
 import cn.link.common.WifiUtil;
 import cn.link.modular.DownLoader;
 import cn.link.net.Base;
 import cn.link.net.Scanner;
+import cn.link.net.Session;
 
 /**
  * 全局类 类似j2ee中的 Application的概念 作为类与类之间的交互中心，存放 共用数据
@@ -33,15 +35,14 @@ public class App {
 	private static String hostIp;// 主机IP
 	private static int hostPort;//  主机服务端口
 	private static String gateWay;// 网关IP
+	private static String DownLoadPath = "JCdownload";// 文件到手机SD卡上的指定目录
 
-	public static String downLoadPath = "JCdownload";// 文件到手机SD卡上的指定目录
 
 	public static String SdCardPath = Environment.getExternalStorageDirectory()
 			+ "/";
 
 
 	private static List<Activity> activities = new ArrayList<Activity>();// 存放Activity
-	private static Map<String,Object> temp = new HashMap<String, Object>();
 	public static ArrayBlockingQueue<FileInfo> fi_queue = new ArrayBlockingQueue<FileInfo>(
 			100);
 
@@ -49,23 +50,18 @@ public class App {
 
 
 	static {
-		path = new File(App.SdCardPath + App.downLoadPath);
+		path = new File(App.SdCardPath + App.DownLoadPath);
 		if (!path.exists()) {
 			path.mkdirs();
 		}
 	}
 
-	public static void setTemp(String key,Object obj){
-		if(temp.containsKey(key))
-			temp.remove(key);
-		temp.put(key, obj);
-	}
 
-	public static Object getTemp(String key){
+/*	public static Object getTemp(String key){
 		if(temp.containsKey(key))
 			return temp.get(key);
 		return null;
-	}
+	}*/
 
 	/**
 	 * 根据FileInfo对象获取下载器
@@ -87,7 +83,7 @@ public class App {
 
 
 	public static File getFileByFileInfo(FileInfo fi) throws IOException {
-		File path = new File(App.SdCardPath + App.downLoadPath);
+		File path = new File(App.SdCardPath + App.DownLoadPath);
 		if (!path.exists()) {
 			path.mkdirs();
 		}
@@ -220,5 +216,35 @@ public class App {
 
 	private static void HostPort(int port) {
 		App.hostPort = port;
+	}
+
+	public static String HostPort() {
+		return String.valueOf(App.hostPort);
+	}
+
+	public static Session getSession(){
+		return Session.create();
+	}
+
+	public static String getFileMsg(Base.File file){
+		return new StringBuffer(ConstStrings.FileName)
+				.append(ConstStrings.Colon)
+				.append(file.name)
+				.append(ConstStrings.LineSeparator)
+				.append(ConstStrings.FilePath)
+				.append(ConstStrings.Colon)
+				.append(file.Path)
+				.append(ConstStrings.LineSeparator)
+				.append(ConstStrings.FileType)
+				.append(ConstStrings.Colon)
+				.append(file.isDir?ConstStrings.Folder:ConstStrings.File)
+				.append(ConstStrings.LineSeparator)
+				.append(ConstStrings.FileSize)
+				.append(ConstStrings.Colon)
+				.append(String.valueOf(Long.valueOf(file.size).intValue())
+						.concat(
+								MyMath.divide(file.size, 1048576, ConstStrings.DivideFormat)
+										.concat(ConstStrings.FileUnits))).toString();
+
 	}
 }

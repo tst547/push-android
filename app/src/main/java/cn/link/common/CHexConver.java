@@ -1,16 +1,16 @@
 package cn.link.common;
 
   
-import java.util.Locale;  
-  
-/** 
+import java.util.Locale;
+
+/**
  * 16进制值与String/Byte之间的转换 
  * @author JerryLi 
  * @email lijian@dzs.mobi 
  * @data 2011-10-16 
  * */  
-public class CHexConver  
-{  
+public class CHexConver
+{
     private final static char[] mChars = "0123456789ABCDEF".toCharArray();  
     private final static String mHexStr = "0123456789ABCDEF";    
     /**  
