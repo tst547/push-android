@@ -99,8 +99,10 @@ public class LoadActivity extends BaseActivity {
          */
         @Override
         protected Boolean doInBackground(Object... params) {
+
             if (Integer.valueOf(String.valueOf(params[0])) == Key.FindKey)
                 if (App.findHost()) {
+                    App.getSession().connectTest();
                     Log.i("conn", "Success");
                     return true;
                 } else {
@@ -109,6 +111,7 @@ public class LoadActivity extends BaseActivity {
                 }
             else if (Integer.valueOf(String.valueOf(params[0])) == Key.ScanKey) {
                 if (App.scanHost()) {
+                    App.getSession().connectTest();
                     Log.i("conn", "Success");
                     return true;
                 } else {

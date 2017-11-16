@@ -2,12 +2,11 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 19
-    buildToolsVersion '25'
-
+    buildToolsVersion '25.0.0'
     defaultConfig {
         applicationId "cn.link.activity"
         minSdkVersion 19
-        targetSdkVersion 25
+        targetSdkVersion 19
         jackOptions {
             enabled true
         }
@@ -16,7 +15,6 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 22
@@ -29,8 +27,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
-    android{compileOptions.encoding="UTF-8"}
+    android { compileOptions.encoding = "UTF-8" }
+    productFlavors {
+    }
 }
 
 dependencies {

@@ -18,6 +18,8 @@ import java.util.*;
  */
 public class Session {
 
+    private boolean connected;
+
     private String urlBase;
 
     private static Session session;
@@ -41,9 +43,16 @@ public class Session {
      * @return
      */
     public boolean isConnected(){
+        return connected;
+    }
+
+    public boolean connectTest(){
         String result = get("/test",null);
-        if (null != result && result.contains("finish"))
+        if (connected = false && null != result && result.contains("finish")){
+            connected = true;
             return true;
+        }
+        connected = false;
         return false;
     }
 
@@ -56,7 +65,7 @@ public class Session {
         Map<String,Object> temp = new HashMap<>();
         if (null!=filePath)
             temp.put("filePath",filePath);
-        String result = get("/list",temp);
+        String result = get("/list",temp);//fixme 主线程内请求网络会抛出异常 需异步(UI刷新必须在指定线程)
         if (null != result){
             Base base = new Base();
             Base.BaseMsg<List<Base.File>> type = base.new BaseMsg<>();

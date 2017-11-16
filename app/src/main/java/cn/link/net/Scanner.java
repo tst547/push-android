@@ -1,9 +1,11 @@
 package cn.link.net;
 
 import cn.link.common.MyGson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.net.*;
+import java.util.List;
 
 /**
  * Created by hanyu on 2017/11/15 0015.
@@ -38,15 +40,14 @@ public class Scanner {
      */
     public Base.BaseMsg<Base.IpMsg> conn() throws IOException {
         socket.send(packet);
-        byte[] buf = new byte[2048];
+        byte[] buf = new byte[1024];
         DatagramPacket recv = new DatagramPacket(buf,buf.length);
         socket.receive(recv);
-        System.err.println(new String(recv.getData()));
         Base base = new Base();
         Base.BaseMsg<Base.IpMsg> type = base.new BaseMsg<>();
         Base.BaseMsg<Base.IpMsg> bean  = MyGson.getObject(
-                new String(recv.getData() , 0 ,recv.getLength()),
-                type.getClass()
+                new String(recv.getData()).trim(),
+                new TypeToken<Base.BaseMsg<Base.IpMsg>>(){}.getType()
         );
         return bean;
     }

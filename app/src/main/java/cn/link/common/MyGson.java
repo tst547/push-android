@@ -1,5 +1,6 @@
 package cn.link.common;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -15,6 +16,10 @@ public class MyGson {
 	
 	public static <T> T getObject(String json,Class<T> clazz){
 		return gson.fromJson(json, clazz);
+	}
+
+	public static <T> T getObject(String json,Type type){
+		return gson.fromJson(json, type);
 	}
 	
 	public static <T> List<T> getList(String json,Class<T> clazz){
