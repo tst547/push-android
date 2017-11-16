@@ -9,7 +9,7 @@ import android.util.Log;
 import cn.link.beans.FileInfo;
 import cn.link.common.MyMath;
 /**
- * ÏÂÔØÈÎÎñ
+ * ä¸‹è½½ä»»åŠ¡
  * @author hanyu
  *
  */
@@ -17,13 +17,13 @@ public class DownLoadTask {
 	
 	private long timeId; 
 	
-	private Progress pro;//½ø¶ÈÌõ
+	private Progress pro;//è¿›åº¦æ¡
 	
-	private File file;//ÏÂÔØÎÄ¼şÊÖ»úÎÄ¼ş
+	private File file;//ä¸‹è½½æ–‡ä»¶æ‰‹æœºæ–‡ä»¶
 	
-	private boolean run_flag;//ÏÂÔØ±êÖ¾
+	private boolean run_flag;//ä¸‹è½½æ ‡å¿—
 	
-	private boolean isDir;//ÊÇ·ñÊÇÎÄ¼ş¼Ğ±êÖ¾
+	private boolean isDir;//æ˜¯å¦æ˜¯æ–‡ä»¶å¤¹æ ‡å¿—
 	
 	public boolean isDir() {
 		return isDir;
@@ -42,7 +42,7 @@ public class DownLoadTask {
 	}
 
 	/**
-	 * »ñÈ¡½ø¶ÈÌõ
+	 * è·å–è¿›åº¦æ¡
 	 * @return
 	 */
 	public Progress getProgress(){
@@ -50,7 +50,7 @@ public class DownLoadTask {
 	}
 	
 	/**
-	 * »ñÈ¡ÊÖ»úÎÄ¼ş
+	 * è·å–æ‰‹æœºæ–‡ä»¶
 	 * @return
 	 */
 	public File getFile(){
@@ -58,7 +58,7 @@ public class DownLoadTask {
 	}
 	
 	/**
-	 * »ñÈ¡ÔËĞĞ±êÖ¾
+	 * è·å–è¿è¡Œæ ‡å¿—
 	 * @return
 	 */
 	public boolean isRun(){
