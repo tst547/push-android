@@ -11,7 +11,6 @@ import cn.link.net.Base;
 public class DownLoadMsg {
 
 	public DownLoadMsg(){
-
 	}
 
 	private String msg;

@@ -5,28 +5,30 @@ package cn.link.box;
  */
 public class ConstStrings {
 
-    public static final String LineSeparator = "/n";//æ¢è¡Œç¬¦
-    public static final String Colon = ":";//å†’å·
-    public static final String FileUnits = "MB";//æ–‡ä»¶å¤§å°å•ä½
-    public static final String DivideFormat = "0.00";//é™¤æ³•ç»“æœæ ‡å‡†
+    public static final String LineSeparator = "\n";//»»ĞĞ·û
+    public static final String Colon = ":";//Ã°ºÅ
+    public static final String FileUnits = "MB";//ÎÄ¼ş´óĞ¡µ¥Î»
+    public static final String FileUnitsKb = "KB";
+    public static final String FileUnitsByte = "byte";
 
-    public static final String FileName = "æ–‡ä»¶å";//æ–‡ä»¶
-    public static final String FileSize = "æ–‡ä»¶å¤§å°";//æ–‡ä»¶
-    public static final String FilePath= "æ–‡ä»¶è·¯å¾„";//æ–‡ä»¶è·¯å¾„
-    public static final String FileType= "æ–‡ä»¶ç±»å‹";//æ–‡ä»¶è·¯å¾„
+    public static final String DivideFormat = "0.00";//³ı·¨½á¹û±ê×¼
+    public static final String FileName = "ÎÄ¼şÃû";//ÎÄ¼ş
+    public static final String FileSize = "ÎÄ¼ş´óĞ¡";//ÎÄ¼ş
+    public static final String FilePath= "ÎÄ¼şÂ·¾¶";//ÎÄ¼şÂ·¾¶
 
-    public static final String ConnFailed = "æœªè¿æ¥æˆåŠŸ";// è¿æ¥å¤±è´¥æç¤º
-    public static final String PlzWait = "è¯·ç¨ç­‰...";//ç­‰å¾…æç¤º
-    public static final String Ununited = "æœªè¿æ¥";//æœªè¿æ¥æç¤º
-    public static final String Connected = "å·²è¿æ¥";//å·²è¿æ¥æç¤º
-    public static final String DownLoad = "å¼€å§‹ä¸‹è½½";//ä¸‹è½½
-    public static final String Detail = "æ–‡ä»¶å±æ€§";//ä¸‹è½½
-    public static final String Options = "é€‰é¡¹";//ä¸‹è½½
-    public static final String Confirm = "ç¡®å®š";//ç¡®è®¤
-    public static final String Folder = "æ–‡ä»¶å¤¹";//æ–‡ä»¶å¤¹
+    public static final String FileType= "ÎÄ¼şÀàĞÍ";//ÎÄ¼şÂ·¾¶
+    public static final String ConnFailed = "Î´Á¬½Ó³É¹¦";// Á¬½ÓÊ§°ÜÌáÊ¾
+    public static final String PlzWait = "ÇëÉÔµÈ...";//µÈ´ıÌáÊ¾
+    public static final String Ununited = "Î´Á¬½Ó";//Î´Á¬½ÓÌáÊ¾
+    public static final String Connected = "ÒÑÁ¬½Ó";//ÒÑÁ¬½ÓÌáÊ¾
+    public static final String DownLoad = "¿ªÊ¼ÏÂÔØ";//ÏÂÔØ
+    public static final String Detail = "ÎÄ¼şÊôĞÔ";//ÏÂÔØ
+    public static final String Options = "Ñ¡Ïî";//ÏÂÔØ
+    public static final String Confirm = "È·¶¨";//È·ÈÏ
 
-    public static final String File = "æ–‡ä»¶";//æ–‡ä»¶
-    public static final String DownLoadCreateFailed = "ä»»åŠ¡åˆ›å»ºå¤±è´¥ï¼Œæ‰‹æœºåˆ›å»ºæ–‡ä»¶é”™è¯¯";
-    public static final String DownLoadFileOutPutFailed = "ä»»åŠ¡åˆ›å»ºå¤±è´¥ï¼Œæ–‡ä»¶è¾“å‡ºæµåˆ›å»ºé”™è¯¯";
-    public static final String DownLoadStreamFailed = "ä»»åŠ¡å¤±è´¥ï¼Œè¯»å†™æ“ä½œé”™è¯¯";
+    public static final String Folder = "ÎÄ¼ş¼Ğ";//ÎÄ¼ş¼Ğ
+    public static final String File = "ÎÄ¼ş";//ÎÄ¼ş
+    public static final String DownLoadCreateFailed = "ÈÎÎñ´´½¨Ê§°Ü£¬ÊÖ»ú´´½¨ÎÄ¼ş´íÎó";
+    public static final String DownLoadFileOutPutFailed = "ÈÎÎñ´´½¨Ê§°Ü£¬ÎÄ¼şÊä³öÁ÷´´½¨´íÎó";
+    public static final String DownLoadStreamFailed = "ÈÎÎñÊ§°Ü£¬¶ÁĞ´²Ù×÷´íÎó";
 }

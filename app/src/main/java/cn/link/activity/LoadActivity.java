@@ -1,6 +1,7 @@
 package cn.link.activity;
 
 import java.io.Serializable;
+import java.util.List;
 
 import cn.link.box.ConstStrings;
 import cn.link.box.Key;
@@ -16,6 +17,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import cn.link.box.App;
+import cn.link.common.MyGson;
+import cn.link.net.Base;
+import com.google.gson.reflect.TypeToken;
 
 /**
  * 主Activity
@@ -70,7 +74,6 @@ public class LoadActivity extends BaseActivity {
      * Android程序设计中不允许在
      * 主线程中作出尝试网络连接等耗时长的
      * 阻塞主线程的行为
-     * <p>
      * AsyncTask 正是Android为耗时操作提供
      * 的执行类
      *
@@ -125,7 +128,6 @@ public class LoadActivity extends BaseActivity {
         /**
          * doInBackground执行完之后
          * 返回值会传入该函数(也就是方法)中
-         * <p>
          * Android指定在该函数中执行涉及UI操作
          */
         @Override
@@ -139,7 +141,7 @@ public class LoadActivity extends BaseActivity {
             Button fileBtn = (Button) findViewById(R.id.btn_file);
             pushBtn.setOnClickListener((v) -> {
                 Intent intent = new Intent(LoadActivity.this, PushActivity.class);
-                if (!App.getSession().isConnected()) {
+                if (!result) {
                     toastMsg(getBaseContext(), ConstStrings.Ununited);
                     pushBtn.setVisibility(View.GONE);
                     fileBtn.setVisibility(View.GONE);
@@ -147,18 +149,26 @@ public class LoadActivity extends BaseActivity {
                 }
                 startActivity(intent);
             });
-            fileBtn.setOnClickListener((v) -> {
+            fileBtn.setOnClickListener((View v) -> {
                 Intent intent = new Intent(LoadActivity.this, FileActivity.class);
-                if (!App.getSession().isConnected()) {
+                if (!result) {
                     toastMsg(getBaseContext(), ConstStrings.ConnFailed);
                     pushBtn.setVisibility(View.GONE);
                     fileBtn.setVisibility(View.GONE);
                     conBtn.setVisibility(View.VISIBLE);
                 }
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(Key.FileListKey,(Serializable)App.getSession().getFileList(null));
-                intent.putExtras(bundle);
-                startActivity(intent);
+                App.getSession().getFileList(null
+                        , (res -> {
+                            if (null != res) {
+                                Base.BaseMsg<List<Base.File>> baseMsg = (Base.BaseMsg<List<Base.File>>) MyGson.getObject(res
+                                        , new TypeToken<Base.BaseMsg<List<Base.File>>>() {
+                                        }.getType());
+                                Bundle bundle = new Bundle();
+                                bundle.putSerializable(Key.FileListKey, (Serializable) baseMsg.msg);
+                                intent.putExtras(bundle);
+                                startActivity(intent);
+                            }
+                        }));
             });
             if (result) {//如果成功连接,则主界面初始化 "我的电脑","推送文件" 这两个按钮
                 pushBtn.setVisibility(View.VISIBLE);

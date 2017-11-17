@@ -14,12 +14,6 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.example.qr_codescan.MipcaActivityCapture"
-            android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden" >
-        </activity>
-        <activity
             android:name=".LoadActivity"
             android:label="LinkPC"
             android:launchMode="singleTask" >
@@ -36,10 +30,10 @@
         <activity android:name="cn.link.activity.SettingActivity" >
         </activity>
         <activity android:name="cn.link.activity.PushActivity"
-                  android:launchMode="singleTop">
+                  android:launchMode="standard">
         </activity>
         <activity android:name="cn.link.activity.FileActivity"
-                  android:launchMode="singleTop">
+                  android:launchMode="standard">
         </activity>
     </application>
 

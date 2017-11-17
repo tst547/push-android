@@ -1,6 +1,5 @@
-package cn.link.data.dao;
+package cn.link.dao;
 
-import cn.link.box.App;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 

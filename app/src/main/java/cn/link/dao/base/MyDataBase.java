@@ -1,4 +1,4 @@
-package cn.link.data;
+package cn.link.dao.base;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

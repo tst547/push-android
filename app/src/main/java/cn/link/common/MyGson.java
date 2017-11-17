@@ -18,7 +18,7 @@ public class MyGson {
 		return gson.fromJson(json, clazz);
 	}
 
-	public static <T> T getObject(String json,Type type){
+	public static Object getObject(String json,Type type){
 		return gson.fromJson(json, type);
 	}
 	

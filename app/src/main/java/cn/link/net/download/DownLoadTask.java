@@ -15,6 +15,10 @@ public class DownLoadTask extends AsyncTask<DownLoadMsg,Integer,Integer>{
         this.view = view;
     }
 
+    public void updatePro(int current){
+        publishProgress(current);
+    }
+
     @Override
     protected Integer doInBackground(DownLoadMsg... downLoadMsgs) {
         netable.runDown(this,downLoadMsgs[0],view);
@@ -27,7 +31,8 @@ public class DownLoadTask extends AsyncTask<DownLoadMsg,Integer,Integer>{
         if (pro.getProgress()<0)
             pro.setProgress(0);
         if (pro.getProgress()<100)
-            pro.incrementProgressBy(values[0]);
+            pro.incrementProgressBy(
+                    values[0]-pro.getProgress()>0?values[0]-pro.getProgress():pro.getProgress());
     }
 
     public DownLoadTask setNetable(Netable netable) {
