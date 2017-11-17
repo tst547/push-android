@@ -1,5 +1,7 @@
 package cn.link.common;
 
+import cn.link.box.ConstStrings;
+
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -20,7 +22,10 @@ public class MyMath {
 		DecimalFormat df = new DecimalFormat(format);
 		return df.format(b1.divide(b2));
 	}
-	
+
+	public static void main(String[]arg){
+		System.out.print(MyMath.divide(136823, 1024, ConstStrings.DivideFormat));
+	}
 	/**
 	 * 精确计算占比 以100为最大值
 	 * @param current
@@ -35,9 +40,9 @@ public class MyMath {
 		return b1.divide(b2,mc).multiply(b3).intValue();
 	}
 	
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		System.out.println(divideMax100(654654,54585));
-	}
+	}*/
 	
 	/**
 	 * 精确加法计算

@@ -2,6 +2,7 @@ package cn.link.activity;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.widget.Toast;
 import cn.link.box.App;
 import android.app.Activity;
@@ -36,7 +37,6 @@ public abstract class BaseActivity extends Activity{
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		App.removeActivity(this);
 	}
 
 	/**
@@ -69,7 +69,7 @@ public abstract class BaseActivity extends Activity{
 		AlertDialog.Builder builder = new Builder(BaseActivity.this);
 		builder.setMessage(msg);
 		builder.setTitle(head);
-		builder.setPositiveButton(ConstStrings.Confirm, (dialog, which) -> dialog.dismiss());
+		builder.setPositiveButton(ConstStrings.Confirm, (dialog, which) ->{});
 		builder.create().show();
 	}
 

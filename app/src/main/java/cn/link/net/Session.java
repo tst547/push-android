@@ -2,6 +2,7 @@ package cn.link.net;
 
 import cn.link.box.App;
 import cn.link.box.ConstStrings;
+import cn.link.box.Key;
 import cn.link.common.MyGson;
 import cn.link.common.MyMath;
 import cn.link.net.download.DownLoadMsg;
@@ -22,7 +23,7 @@ public class Session {
 
     private static Session session;
 
-    private Session(String urlBase){
+    private Session(String urlBase) {
         this.urlBase = urlBase;
     }
 
@@ -30,49 +31,32 @@ public class Session {
      * @return
      */
     public static Session create() {
-        if (null==session){
+        if (null == session) {
             session = new Session("http://" + App.HostIp() + ":" + App.HostPort());
         }
         return session;
     }
 
     /**
-     * 连接测试
-     * @return
-     */
-    public boolean isConnected(){
-        String result = get("/test",null);
-        if (null != result && result.contains("finish"))
-            return true;
-        return false;
-    }
-
-    /**
      * 文件列表
+     *
      * @param filePath
      * @return
      */
-    public List<Base.File> getFileList(String filePath){
-        Map<String,Object> temp = new HashMap<>();
-        if (null!=filePath)
-            temp.put("filePath",filePath);
-        String result = get("/list",temp);
-        if (null != result){
-            Base base = new Base();
-            Base.BaseMsg<List<Base.File>> type = base.new BaseMsg<>();
-            type  = MyGson.getObject(result, type.getClass());
-            if (type.err!=1)
-                return type.msg;
-        }
-        return new ArrayList<>();
+    public void getFileList(String filePath, MyCallback.Netable able) {
+        Map<String, Object> temp = new HashMap<>();
+        if (null != filePath)
+            temp.put(Key.FilePathKey, filePath);
+        get(Key.PathListKey, temp, able);
     }
 
     /**
      * 文件下载
+     *
      * @param downLoadTask
      */
-    public void fileDownLoad(DownLoadTask downLoadTask, DownLoadMsg downLoadMsg){
-        downLoadTask.setNetable((loadTask,msg,view)->{
+    public void fileDownLoad(DownLoadTask downLoadTask, DownLoadMsg downLoadMsg) {
+        downLoadTask.setNetable((loadTask, msg, view) -> {
             Progress progress = msg.getProgress();
             File file = msg.getFile();
             FileOutputStream bos;
@@ -88,11 +72,11 @@ public class Session {
             OkHttpClient okHttpClient = new OkHttpClient();
 
             RequestBody body = new FormBody.Builder()
-                    .add("filePath", msg.getBaseFile().path)
+                    .add(Key.FilePathKey, msg.getBaseFile().path)
                     .build();
 
             Request request = new Request.Builder()
-                    .url(urlBase+"/fileDL")
+                    .url(urlBase + "/fileDL")
                     .post(body)
                     .build();
 
@@ -101,14 +85,14 @@ public class Session {
                 Response response = call.execute();
                 BufferedInputStream bis = new BufferedInputStream(response.body().byteStream());
                 int read;
-                while((read = bis.available())>0){
+                while ((read = bis.available()) > 0) {
                     byte[] temp = new byte[read];
                     bis.read(temp);
                     bos.write(temp);
-                    progress.setOffset(progress.getOffset()+read);
-                    progress.setCurrent(MyMath.divideMax100(progress.getOffset(),progress.getMax()));
-                    if (!msg.isRunFlag()){
-                        msg.setRunFlag(false);
+                    progress.setOffset(progress.getOffset() + read);
+                    progress.setCurrent(MyMath.divideMax100(progress.getOffset(), progress.getMax()));
+                    loadTask.updatePro(progress.getCurrent());
+                    if (!msg.isRunFlag()) {
                         bis.close();
                         break;
                     }
@@ -118,7 +102,7 @@ public class Session {
                 msg.setRunFlag(false);
                 msg.setMsg(ConstStrings.DownLoadStreamFailed);
                 return false;
-            }finally {
+            } finally {
                 try {
                     bos.close();
                 } catch (IOException e) {
@@ -132,29 +116,26 @@ public class Session {
 
     /**
      * 简单http get请求拼装
+     *
      * @param path
      * @param params
      * @return
      */
-    private String get(String path, Map<String,Object> params){
-        if (null!=params)
-            for (Map.Entry<String,Object> entry:params.entrySet()){
-                if (!path.endsWith("&")&&!path.contains("&"))
-                    path.concat("?"+entry.getKey()+"="+entry.getValue());
+    private void get(String path, Map<String, Object> params, MyCallback.Netable able) {
+        if (null != params)
+            for (Map.Entry<String, Object> entry : params.entrySet()) {
+                if (!path.endsWith("&") && !path.contains("&"))
+                    path = path.concat("?" + entry.getKey() + "=" + entry.getValue());
                 else
-                    path.concat("&"+entry.getKey()+"="+entry.getValue());
+                    path = path.concat("&" + entry.getKey() + "=" + entry.getValue());
             }
         OkHttpClient okHttpClient = new OkHttpClient();
         Request request = new Request.Builder()
-                .url(urlBase+path)
+                .url(urlBase + path)
                 .build();
         Call call = okHttpClient.newCall(request);
-        try {
-            Response response = call.execute();
-            return response.body().string();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+        call.enqueue(new MyCallback(able));
     }
+
+
 }

@@ -12,10 +12,12 @@ import android.widget.*;
 import cn.link.box.App;
 import cn.link.box.ConstStrings;
 import cn.link.box.Key;
+import cn.link.common.MyGson;
 import cn.link.net.download.DownLoadMsg;
 import cn.link.net.download.DownLoadTask;
 import cn.link.net.download.Progress;
 import cn.link.net.Base;
+import com.google.gson.reflect.TypeToken;
 
 public class FileActivity extends BaseActivity {
 
@@ -42,12 +44,16 @@ public class FileActivity extends BaseActivity {
         hlv.setOnItemClickListener((adapterView, view, pos, n) -> {
             Base.File file = (Base.File) hlv.getItemAtPosition(pos);
             if (file.isDir) {
-                Intent intent = new Intent(FileActivity.this, FileActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(Key.FileListKey, (Serializable) App.getSession().getFileList(file.path));
-                intent.putExtras(bundle);
-                startActivity(intent);
-                return;
+                App.getSession().getFileList(file.path, (res -> {
+                    Base.BaseMsg<List<Base.File>> baseMsg = (Base.BaseMsg<List<Base.File>>) MyGson.getObject(res
+                            , new TypeToken<Base.BaseMsg<List<Base.File>>>() {
+                            }.getType());
+                    Intent intent = new Intent(FileActivity.this, FileActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(Key.FileListKey, (Serializable) baseMsg.msg);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }));
             }
         });
         hlv.setOnItemLongClickListener((adapterView, view, pos, n) -> {
@@ -55,28 +61,28 @@ public class FileActivity extends BaseActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(FileActivity.this);
             String[] options = {ConstStrings.Detail, ConstStrings.DownLoad};
             builder
-                .setItems(options, (dialog, which) -> {
-                    if (which==0)
-                        dialogShowMsg(ConstStrings.Detail, App.getFileMsg(file));
-                    if (which==1){
-                        try {
-                            Progress progress = new Progress();
-                            progress.setMax(file.size);
-                            DownLoadMsg downLoadMsg = new DownLoadMsg();
-                            downLoadMsg.setBaseFile(file);
-                            downLoadMsg.setRunFlag(true);
-                            downLoadMsg.setId(System.currentTimeMillis());
-                            downLoadMsg.setProgress(progress);
-                            downLoadMsg.setFile(App.createFileByBaseFile(file));
-                            App.getSession().fileDownLoad(new DownLoadTask(view),downLoadMsg);
-                            App.downloadMsgs.add(downLoadMsg);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            toastMsg(getBaseContext(),ConstStrings.DownLoadCreateFailed);
+                    .setItems(options, (dialog, which) -> {
+                        if (which == 0)
+                            dialogShowMsg(ConstStrings.Detail, App.getFileMsg(file));
+                        if (which == 1) {
+                            try {
+                                Progress progress = new Progress();
+                                progress.setMax(file.size);
+                                DownLoadMsg downLoadMsg = new DownLoadMsg();
+                                downLoadMsg.setBaseFile(file);
+                                downLoadMsg.setRunFlag(true);
+                                downLoadMsg.setId(System.currentTimeMillis());
+                                downLoadMsg.setProgress(progress);
+                                downLoadMsg.setFile(App.createFileByBaseFile(file));
+                                App.getSession().fileDownLoad(new DownLoadTask(view), downLoadMsg);
+                                App.downloadMsgs.add(downLoadMsg);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                toastMsg(getBaseContext(), ConstStrings.DownLoadCreateFailed);
+                            }
                         }
-                    }
-                })
-                .show();
+                    })
+                    .show();
             return true;
         });
     }
@@ -97,8 +103,6 @@ public class FileActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.app_setting:
-                // Toast.makeText(FirstActivity.this, "you click setting",
-                // Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(FileActivity.this, SettingActivity.class);
                 startActivityForResult(intent, 1);
                 break;
@@ -141,7 +145,6 @@ public class FileActivity extends BaseActivity {
             View view = inflater.inflate(R.layout.file_item, null);
             TextView text = (TextView) view.findViewById(R.id.item_text);
             ImageView image = (ImageView) view.findViewById(R.id.icon);
-
             text.setText(file.name);
             if (file.isDir)
                 image.setImageResource(R.drawable.icons_folder);

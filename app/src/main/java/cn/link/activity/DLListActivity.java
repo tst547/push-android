@@ -17,15 +17,11 @@ import com.daimajia.numberprogressbar.NumberProgressBar;
 
 /**
  * 下载列表Activity
- * 
  * @author hanyu
- * 
  */
 public class DLListActivity extends BaseActivity {
 
 	ListView lsv;// 列表view
-
-	// private List<DownLoadTask> down_list = App.getDownLoadList();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

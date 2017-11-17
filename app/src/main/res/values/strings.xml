@@ -10,7 +10,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="scan_text">将二维码放入框内, 即可自动扫描</string>
-
     <string name="app_btn_ew">扫描主机</string>
 
     <string name="app_btn_push">推送文件</string>
@@ -18,4 +17,26 @@
     <string name="app_btn_submit">确定</string>
     <string name="text_filter">清晰度</string>
     <string name="text_frame">流畅度</string>
+
+    <!--<string name="LineSeparator">/n</string>
+    <string name="Colon">:</string>
+    <string name="FileUnits">MB</string>
+    <string name="DivideFormat">0.00</string>
+    <string name="FileName">文件名</string>
+    <string name="FilePath">文件路径</string>
+    <string name="FileType">文件类型</string>
+    <string name="ConnFailed">未连接成功</string>
+    <string name="PlzWait">请稍等...</string>
+    <string name="Ununited">未连接</string>
+    <string name="Connected">已连接</string>
+    <string name="DownLoad">开始下载</string>
+    <string name="Detail">文件属性</string>
+    <string name="Options">选项</string>
+    <string name="Confirm">确定</string>
+    <string name="Folder">文件夹</string>
+    <string name="File">文件</string>
+    <string name="DownLoadCreateFailed">任务创建失败，手机创建文件错误</string>
+    <string name="DownLoadFileOutPutFailed">任务创建失败，文件输出流创建错误</string>
+    <string name="DownLoadStreamFailed">任务失败，读写操作错误</string>-->
+
 </resources>

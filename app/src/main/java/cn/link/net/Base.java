@@ -13,7 +13,6 @@ public class Base {
     }
 
     public class IpMsg implements Serializable{
-        public String addr;//地址
         public int port;//端口
     }
 

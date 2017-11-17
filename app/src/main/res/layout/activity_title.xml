@@ -1,37 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/mmtitle_bg_alpha" >
+                android:id="@+id/layout_titlebar"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="#FFFFFF" >
+    <TextView
+            android:id="@+id/text_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ellipsize="marquee"
+            android:gravity="center_horizontal|center"
+            android:text="标题栏"
+            android:textColor="#8A2BE2"
+            android:textSize="20dp"
+            android:maxLines="1"/>
 
     <Button
-        android:id="@+id/button_back"
-        android:layout_width="75.0dip"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:background="@drawable/mm_title_back_btn"
-        android:text="返回"
-        android:textColor="@android:color/white" />
+            android:id="@+id/button_backward"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/icons_bak"
+            android:drawablePadding="6dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:onClick="onClick"
+            android:paddingLeft="5dp"
+            android:textColor="#8A2BE2"
+            android:textSize="18dp"
+            android:maxLines="1"/>
 
-    <TextView
-        android:id="@+id/textview_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:gravity="center_vertical"
-        android:text="二维码扫描"
-        android:textColor="@android:color/white"
-        android:textSize="18sp" />
-
-    <ImageButton
-        android:id="@+id/button_function"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="2dip"
-        android:background="@drawable/mm_title_right_btn"
-        android:minWidth="70dip"
-        android:src="@drawable/mm_title_btn_menu_normal" />
+    <Button
+            android:id="@+id/button_forward"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:drawablePadding="6dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:onClick="onClick"
+            android:paddingLeft="5dp"
+            android:text="提交"
+            android:textColor="#8A2BE2"
+            android:textSize="18dp"
+            android:visibility="invisible"
+            android:maxLines="1"/>
 
 </RelativeLayout>
