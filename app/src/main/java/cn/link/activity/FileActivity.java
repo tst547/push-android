@@ -1,7 +1,6 @@
 package cn.link.activity;
 
-import java.io.IOException;
-import java.io.Serializable;
+import java.io.*;
 import java.util.List;
 
 import android.app.AlertDialog;
@@ -13,8 +12,8 @@ import cn.link.box.App;
 import cn.link.box.ConstStrings;
 import cn.link.box.Key;
 import cn.link.common.MyGson;
+import cn.link.common.MyMath;
 import cn.link.net.download.DownLoadMsg;
-import cn.link.net.download.DownLoadTask;
 import cn.link.net.download.Progress;
 import cn.link.net.Base;
 import com.google.gson.reflect.TypeToken;
@@ -33,7 +32,6 @@ public class FileActivity extends BaseActivity {
     }
 
 
-
     /**
      * 初始化列表
      *
@@ -46,15 +44,21 @@ public class FileActivity extends BaseActivity {
         hlv.setOnItemClickListener((adapterView, view, pos, n) -> {
             Base.File file = (Base.File) hlv.getItemAtPosition(pos);
             if (file.isDir) {
-                App.getSession().getFileList(file.path, (res -> {
-                    Base.BaseMsg<List<Base.File>> baseMsg = (Base.BaseMsg<List<Base.File>>) MyGson.getObject(res
-                            , new TypeToken<Base.BaseMsg<List<Base.File>>>() {
-                            }.getType());
-                    Intent intent = new Intent(FileActivity.this, FileActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable(Key.FileListKey, (Serializable) baseMsg.msg);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
+                App.getSession().getFileList(file.path, ((call, response) -> {
+                    Base.BaseMsg<List<Base.File>> baseMsg;
+                    try {
+                        baseMsg = (Base.BaseMsg<List<Base.File>>) MyGson.getObject(response.body().string()
+                                , new TypeToken<Base.BaseMsg<List<Base.File>>>() {
+                                }.getType());
+                        Intent intent = new Intent(FileActivity.this, FileActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable(Key.FileListKey, (Serializable) baseMsg.msg);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        toastMsg(getBaseContext(), ConstStrings.FailedFileList);
+                    }
                 }));
             }
         });
@@ -76,7 +80,43 @@ public class FileActivity extends BaseActivity {
                                 downLoadMsg.setId(System.currentTimeMillis());
                                 downLoadMsg.setProgress(progress);
                                 downLoadMsg.setFile(App.createFileByBaseFile(file));
-                                App.getSession().fileDownLoad(new DownLoadTask(view), downLoadMsg);
+                                App.getSession().fileDownLoad(downLoadMsg, ((call, response) -> {
+                                    File fl = downLoadMsg.getFile();
+                                    FileOutputStream bos = null;
+                                    try {
+                                        bos = new FileOutputStream(fl);
+                                    } catch (FileNotFoundException e) {
+                                        e.printStackTrace();
+                                        downLoadMsg.setRunFlag(false);
+                                        downLoadMsg.setMsg(ConstStrings.DownLoadFileOutPutFailed);
+                                    }
+                                    try {
+                                        long offset = downLoadMsg.getProgress().getOffset();
+                                        long max = downLoadMsg.getProgress().getMax();
+                                        InputStream is = response.body().byteStream();
+                                        int read;
+                                        byte[] b = new byte[4096];
+                                        while ((read = is.read(b)) != -1 && downLoadMsg.isRunFlag() && offset < max) {
+                                            bos.write(b, 0, read);
+                                            offset += Integer.valueOf(read).longValue();
+                                            progress.setOffset(progress.getOffset() + Integer.valueOf(read).longValue());
+                                            progress.setCurrent(MyMath.divideMax100(progress.getOffset(), progress.getMax()));
+                                            //loadTask.updatePro(progress.getCurrent());
+                                            b = new byte[4096];
+                                        }
+                                        is.close();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                        downLoadMsg.setRunFlag(false);
+                                        downLoadMsg.setMsg(ConstStrings.DownLoadStreamFailed);
+                                    } finally {
+                                        try {
+                                            bos.close();
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }));
                                 App.downloadMsgs.add(downLoadMsg);
                             } catch (IOException e) {
                                 e.printStackTrace();

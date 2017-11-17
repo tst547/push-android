@@ -1,7 +1,9 @@
 package cn.link.activity;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +14,7 @@ import cn.link.box.ConstStrings;
 import cn.link.box.Key;
 import cn.link.common.MyMath;
 import cn.link.net.download.DownLoadMsg;
-import cn.link.net.download.DownLoadTask;
+import cn.link.net.download.ProgressTask;
 import com.daimajia.numberprogressbar.NumberProgressBar;
 
 /**
@@ -23,13 +25,17 @@ public class DLListActivity extends BaseActivity {
 
 	ListView lsv;// 列表view
 
+	List<ProgressTask> taskList;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		super.removeTitle();
 		setContentView(R.layout.activity_down_list);
 		lsv = (ListView) findViewById(R.id.down_load_list);
-		lsv.setAdapter(new CustomAdapter(App.downloadMsgs));
+		List<View> viewList = new ArrayList<>();
+		taskList = new ArrayList<>();
+		lsv.setAdapter(new CustomAdapter(App.downloadMsgs,viewList));
 		lsv.setOnItemClickListener((adapterView, view, pos, n) -> {
 			//todo 暂停or继续任务下载
 		});
@@ -37,19 +43,29 @@ public class DLListActivity extends BaseActivity {
 			//todo 暂停or继续任务下载
 			return true;
 		});
+		for (DownLoadMsg loadMsg:App.downloadMsgs){
+			ProgressTask task = new ProgressTask(viewList);
+			taskList.add(task);
+			task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,loadMsg);
+		}
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		for (ProgressTask task:taskList)
+			task.finish().cancel(true);
 	}
 
 	class CustomAdapter extends BaseAdapter {
 
 		private List<DownLoadMsg> loadMsg;
 
-		protected CustomAdapter(List<DownLoadMsg> loadMsg) {
+		private List<View> viewList;
+
+		protected CustomAdapter(List<DownLoadMsg> loadMsg,List<View> viewList) {
 			this.loadMsg = loadMsg;
+			this.viewList = viewList;
 		}
 
 		@Override
@@ -68,18 +84,36 @@ public class DLListActivity extends BaseActivity {
 		}
 
 		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
+		public View getView(int position, View view, ViewGroup parent) {
+			final ViewHolder viewHolder;
 			DownLoadMsg loadMsg = (DownLoadMsg) getItem(position);
-			LayoutInflater inflater = DLListActivity.this.getLayoutInflater();
-			View view = inflater.inflate(R.layout.down_item, null);
-			TextView text = (TextView) view.findViewById(R.id.down_item_text);
-			NumberProgressBar pro = (NumberProgressBar) view.findViewById(R.id.down_pro);
-			text.setText(loadMsg.getFile().getName()
-					+"   "
-					+MyMath.divide(loadMsg.getProgress().getMax(), Key.MB, ConstStrings.DivideFormat)
-					+ConstStrings.FileUnits);
-			pro.setProgress(loadMsg.getProgress().getCurrent());
+			if(view == null)
+			{
+				viewHolder = new ViewHolder();
+				LayoutInflater inflater = DLListActivity.this.getLayoutInflater();
+				view = inflater.inflate(R.layout.down_item, null);
+				view.setTag(viewHolder);
+				TextView text = (TextView) view.findViewById(R.id.down_item_text);
+				NumberProgressBar pro = (NumberProgressBar) view.findViewById(R.id.down_pro);
+				viewHolder.pro = pro;
+				viewHolder.text = text;
+				viewHolder.text.setText(loadMsg.getFile().getName()
+						+"   "
+						+MyMath.divide(loadMsg.getProgress().getMax(), Key.MB, ConstStrings.DivideFormat)
+						+ConstStrings.FileUnits);
+			}else {
+				viewHolder = (ViewHolder) view.getTag();
+			}
+			view.setTag(R.id.down_load_list,loadMsg.getId());
+			viewHolder.pro.setProgress(loadMsg.getProgress().getCurrent());
+			viewList.add(view);
+
 			return view;
 		}
+	}
+
+	public class ViewHolder{
+		public NumberProgressBar  pro;
+		public TextView text;
 	}
 }

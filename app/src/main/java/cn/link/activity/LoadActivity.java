@@ -1,5 +1,6 @@
 package cn.link.activity;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
@@ -138,15 +139,22 @@ public class LoadActivity extends BaseActivity {
                     conBtn.setVisibility(View.VISIBLE);
                 }
                 App.getSession().getFileList(null
-                        , (res -> {
-                            if (null != res) {
-                                Base.BaseMsg<List<Base.File>> baseMsg = (Base.BaseMsg<List<Base.File>>) MyGson.getObject(res
-                                        , new TypeToken<Base.BaseMsg<List<Base.File>>>() {
-                                        }.getType());
-                                Bundle bundle = new Bundle();
-                                bundle.putSerializable(Key.FileListKey, (Serializable) baseMsg.msg);
-                                intent.putExtras(bundle);
-                                startActivity(intent);
+                        , ((call, response) -> {
+                            String res ;
+                            try {
+                                res = response.body().string();
+                                if (null != response) {
+                                    Base.BaseMsg<List<Base.File>> baseMsg = (Base.BaseMsg<List<Base.File>>) MyGson.getObject(res
+                                            , new TypeToken<Base.BaseMsg<List<Base.File>>>() {
+                                            }.getType());
+                                    Bundle bundle = new Bundle();
+                                    bundle.putSerializable(Key.FileListKey, (Serializable) baseMsg.msg);
+                                    intent.putExtras(bundle);
+                                    startActivity(intent);
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                toastMsg(getBaseContext(),ConstStrings.FailedFileList);
                             }
                         }));
             });

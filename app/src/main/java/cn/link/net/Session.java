@@ -1,16 +1,10 @@
 package cn.link.net;
 
 import cn.link.box.App;
-import cn.link.box.ConstStrings;
 import cn.link.box.Key;
-import cn.link.common.MyGson;
-import cn.link.common.MyMath;
 import cn.link.net.download.DownLoadMsg;
-import cn.link.net.download.DownLoadTask;
-import cn.link.net.download.Progress;
 import okhttp3.*;
 
-import java.io.*;
 import java.util.*;
 
 /**
@@ -52,29 +46,14 @@ public class Session {
 
     /**
      * 文件下载
-     *
-     * @param downLoadTask
+     * @param downLoadMsg
+     * @param able
      */
-    public void fileDownLoad(DownLoadTask downLoadTask, DownLoadMsg downLoadMsg) {
-        downLoadTask.setNetable((loadTask, msg, view) -> {
-            Progress progress = msg.getProgress();
-            File file = msg.getFile();
-            FileOutputStream bos;
-            try {
-                bos = new FileOutputStream(file);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-                msg.setRunFlag(false);
-                msg.setMsg(ConstStrings.DownLoadFileOutPutFailed);
-                return false;
-            }
-
+    public void fileDownLoad(DownLoadMsg downLoadMsg,MyCallback.Netable able) {
             OkHttpClient okHttpClient = new OkHttpClient();
-
             RequestBody body = new FormBody.Builder()
-                    .add(Key.FilePathKey, msg.getBaseFile().path)
+                    .add(Key.FilePathKey, downLoadMsg.getBaseFile().path)
                     .build();
-
             Request request = new Request.Builder()
                     .url(urlBase + "/fileDL")
                     .addHeader(Key.Range
@@ -85,39 +64,8 @@ public class Session {
                                     .getOffset()+"-" : 0))
                     .post(body)
                     .build();
-
             Call call = okHttpClient.newCall(request);
-            try {
-                Response response = call.execute();
-                BufferedInputStream bis = new BufferedInputStream(response.body().byteStream());
-                int read;
-                while ((read = bis.available()) > 0) {
-                    byte[] temp = new byte[read];
-                    bis.read(temp);
-                    bos.write(temp);
-                    progress.setOffset(progress.getOffset() + read);
-                    progress.setCurrent(MyMath.divideMax100(progress.getOffset(), progress.getMax()));
-                    loadTask.updatePro(progress.getCurrent());
-                    if (!msg.isRunFlag()) {
-                        bis.close();
-                        break;
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                msg.setRunFlag(false);
-                msg.setMsg(ConstStrings.DownLoadStreamFailed);
-                return false;
-            } finally {
-                try {
-                    bos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            return true;
-        }).execute(downLoadMsg);
-
+            call.enqueue(new MyCallback(able));
     }
 
     /**

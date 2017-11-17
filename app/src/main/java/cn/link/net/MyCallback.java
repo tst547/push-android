@@ -24,10 +24,10 @@ public class MyCallback implements Callback {
 
     @Override
     public void onResponse(Call call, Response response) throws IOException {
-        netable.run(response.body().string());
+        netable.run(call,response);
     }
 
     public interface Netable {
-        void run(String result);
+        void run(Call call, Response response);
     }
 }

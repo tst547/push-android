@@ -31,4 +31,5 @@ public class ConstStrings {
     public static final String DownLoadCreateFailed = "任务创建失败，手机创建文件错误";
     public static final String DownLoadFileOutPutFailed = "任务创建失败，文件输出流创建错误";
     public static final String DownLoadStreamFailed = "任务失败，读写操作错误";
+    public static final String FailedFileList = "文件列表加载错误";
 }

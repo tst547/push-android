@@ -3,7 +3,7 @@ package cn.link.net.download;
 
 public class Progress {
 
-	private int current;
+	private volatile int current;
 	private volatile long offset;
 	private long max;
 
