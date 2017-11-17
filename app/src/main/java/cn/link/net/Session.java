@@ -77,6 +77,12 @@ public class Session {
 
             Request request = new Request.Builder()
                     .url(urlBase + "/fileDL")
+                    .addHeader(Key.Range
+                            ,String.valueOf(downLoadMsg
+                                    .getProgress()
+                                    .getOffset() > 0 ? downLoadMsg
+                                    .getProgress()
+                                    .getOffset()+"-" : 0))
                     .post(body)
                     .build();
 

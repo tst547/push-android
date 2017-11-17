@@ -32,6 +32,8 @@ public class FileActivity extends BaseActivity {
         initList(fileList);
     }
 
+
+
     /**
      * 初始化列表
      *
@@ -95,25 +97,6 @@ public class FileActivity extends BaseActivity {
         getMenuInflater().inflate(R.menu.activity_main, menu);
         return true;
     }
-
-    /**
-     * 选择菜单将执行该方法
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.app_setting:
-                Intent intent = new Intent(FileActivity.this, SettingActivity.class);
-                startActivityForResult(intent, 1);
-                break;
-            case R.id.app_quit:
-                finish();
-                break;
-            default:
-        }
-        return true;
-    }
-
 
     class CustomAdapter extends BaseAdapter {
 

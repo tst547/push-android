@@ -3,6 +3,7 @@ package cn.link.activity;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.view.MenuItem;
 import android.widget.Toast;
 import cn.link.box.App;
 import android.app.Activity;
@@ -81,6 +82,24 @@ public abstract class BaseActivity extends Activity{
 	protected void toastMsg(Context context, String msg){
 		Toast.makeText(context, msg, Toast.LENGTH_SHORT)
 				.show();
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.app_down:
+				Intent intent1 = new Intent(this, DLListActivity.class);
+				startActivity(intent1);
+				break;
+			case R.id.app_setting:
+				Intent intent2 = new Intent(this, SettingActivity.class);
+				startActivityForResult(intent2, 2);
+				break;
+			case R.id.app_quit:
+				break;
+			default:
+		}
+		return true;
 	}
 
 }

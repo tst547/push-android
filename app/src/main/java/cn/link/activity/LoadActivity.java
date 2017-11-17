@@ -46,24 +46,6 @@ public class LoadActivity extends BaseActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.app_down:
-                Intent intent1 = new Intent(LoadActivity.this, DLListActivity.class);
-                startActivity(intent1);
-                break;
-            case R.id.app_setting:
-                //启动另一个Activity
-                Intent intent2 = new Intent(LoadActivity.this, SettingActivity.class);
-                startActivityForResult(intent2, 2);
-                break;
-            case R.id.app_quit:
-                break;
-            default:
-        }
-        return true;
-    }
 
     @Override
     protected void onDestroy() {
@@ -105,7 +87,6 @@ public class LoadActivity extends BaseActivity {
 
             if (Integer.valueOf(String.valueOf(params[0])) == Key.FindKey)
                 if (App.findHost()) {
-                    App.getSession().connectTest();
                     Log.i("conn", "Success");
                     return true;
                 } else {
@@ -114,7 +95,6 @@ public class LoadActivity extends BaseActivity {
                 }
             else if (Integer.valueOf(String.valueOf(params[0])) == Key.ScanKey) {
                 if (App.scanHost()) {
-                    App.getSession().connectTest();
                     Log.i("conn", "Success");
                     return true;
                 } else {

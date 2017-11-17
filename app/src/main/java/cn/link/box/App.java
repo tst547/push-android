@@ -2,6 +2,7 @@ package cn.link.box;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import cn.link.net.download.DownLoadMsg;
 import cn.link.net.Base;
 import cn.link.net.Scanner;
 import cn.link.net.Session;
+import com.google.gson.reflect.TypeToken;
 
 /**
  * 全局类 类似j2ee中的 Application的概念 作为类与类之间的交互中心，存放 共用数据
@@ -28,6 +30,8 @@ public class App {
     public static String SdCardPath = Environment.getExternalStorageDirectory()
             + "/";
     public static File path;
+
+    public static Type fileListType = new TypeToken<List<Base.File>>() {}.getType();
 
     private static String broadcastAddr;// 广播地址
     private static int ServerScannerPort = 22555; //扫描端口(广播使用)
@@ -129,12 +133,9 @@ public class App {
         if (null != App.hostIp && App.hostPort != 0)
             return true;
         try {
-            /*return new Scanner(App.broadcastAddr, App.ServerScannerPort)
+            return new Scanner(App.broadcastAddr, App.ServerScannerPort)
                     .init()
-                    .conn();*/
-            App.HostIp("192.168.8.58");
-            App.HostPort(8888);
-            return true;
+                    .conn();
         } catch (Exception e) {
             e.printStackTrace();
             return false;
