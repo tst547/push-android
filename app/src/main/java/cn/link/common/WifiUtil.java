@@ -24,7 +24,7 @@ public class WifiUtil {
 	private final static int INADDRSZ = 4;
 
 	/**
-	 * °ÑIPµØÖ·×ª»¯Îª×Ö½ÚÊı×é
+	 * æŠŠIPåœ°å€è½¬åŒ–ä¸ºå­—èŠ‚æ•°ç»„
 	 * 
 	 * @param ipAddr
 	 * @return byte[]
@@ -38,7 +38,7 @@ public class WifiUtil {
 	}
 
 	/**
-	 * °ÑIPµØÖ·×ª»¯Îªint
+	 * æŠŠIPåœ°å€è½¬åŒ–ä¸ºint
 	 * 
 	 * @param ipAddr
 	 * @return int
@@ -59,7 +59,7 @@ public class WifiUtil {
 	}
 
 	/**
-	 * ×Ö½ÚÊı×é×ª»¯ÎªIP
+	 * å­—èŠ‚æ•°ç»„è½¬åŒ–ä¸ºIP
 	 * 
 	 * @param bytes
 	 * @return int
@@ -71,7 +71,7 @@ public class WifiUtil {
 	}
 
 	/**
-	 * ¸ù¾İÎ»ÔËËã°Ñ byte[] -> int
+	 * æ ¹æ®ä½è¿ç®—æŠŠ byte[] -> int
 	 * 
 	 * @param bytes
 	 * @return int
@@ -85,7 +85,7 @@ public class WifiUtil {
 	}
 
 	/**
-	 * °ÑIPµØÖ·×ª»¯Îªint
+	 * æŠŠIPåœ°å€è½¬åŒ–ä¸ºint
 	 * 
 	 * @param ipAddr
 	 * @return int
@@ -114,7 +114,7 @@ public class WifiUtil {
 	}
 
 	/**
-	 * °Ñint->ipµØÖ·
+	 * æŠŠint->ipåœ°å€
 	 * 
 	 * @param ipInt
 	 * @return String
@@ -127,7 +127,7 @@ public class WifiUtil {
 	}
 
 	/**
-	 * °Ñ192.168.1.1/24 ×ª»¯ÎªintÊı×é·¶Î§
+	 * æŠŠ192.168.1.1/24 è½¬åŒ–ä¸ºintæ•°ç»„èŒƒå›´
 	 * 
 	 * @param ipAndMask
 	 * @return int[]
@@ -152,7 +152,7 @@ public class WifiUtil {
 	}
 
 	/**
-	 * °Ñ192.168.1.1/24 ×ª»¯ÎªIPÊı×é·¶Î§
+	 * æŠŠ192.168.1.1/24 è½¬åŒ–ä¸ºIPæ•°ç»„èŒƒå›´
 	 * 
 	 * @param ipAndMask
 	 * @return String[]
@@ -163,7 +163,7 @@ public class WifiUtil {
 	}
 
 	/**
-	 * ¸ù¾İIP ×ÓÍøÑÚÂë£¨192.168.1.1 255.255.255.0£©×ª»¯ÎªIP¶Î
+	 * æ ¹æ®IP å­ç½‘æ©ç ï¼ˆ192.168.1.1 255.255.255.0ï¼‰è½¬åŒ–ä¸ºIPæ®µ
 	 * 
 	 * @param ipAddr
 	 *            ipAddr
@@ -193,7 +193,7 @@ public class WifiUtil {
 	}
 
 	/**
-	 * ¸ù¾İIP ×ÓÍøÑÚÂë£¨192.168.1.1 255.255.255.0£©×ª»¯ÎªIP¶Î
+	 * æ ¹æ®IP å­ç½‘æ©ç ï¼ˆ192.168.1.1 255.255.255.0ï¼‰è½¬åŒ–ä¸ºIPæ®µ
 	 * 
 	 * @param ipAddr
 	 *            ipAddr
@@ -207,11 +207,11 @@ public class WifiUtil {
 	}
 
 	/**
-	 * ½«ÕûÊıĞÎÊ½µÄipµØÖ·×ª»»Îª×Ö·û´®ĞÎÊ½
+	 * å°†æ•´æ•°å½¢å¼çš„ipåœ°å€è½¬æ¢ä¸ºå­—ç¬¦ä¸²å½¢å¼
 	 * 
 	 * @param ipInBigInt
-	 *            ÕûÊıĞÎÊ½µÄipµØÖ·
-	 * @return ×Ö·û´®ĞÎÊ½µÄipµØÖ·
+	 *            æ•´æ•°å½¢å¼çš„ipåœ°å€
+	 * @return å­—ç¬¦ä¸²å½¢å¼çš„ipåœ°å€
 	 */
 	public static String bigIntToString(BigInteger ipInBigInt) {
 		byte[] bytes = ipInBigInt.toByteArray();
@@ -219,7 +219,7 @@ public class WifiUtil {
 		if (bytes.length == 4 || bytes.length == 16) {
 			unsignedBytes = bytes;
 		}
-		// È¥³ı·ûºÅÎ»
+		// å»é™¤ç¬¦å·ä½
 		try {
 			String ip = InetAddress.getByAddress(unsignedBytes).toString();
 			return ip.substring(ip.indexOf('/') + 1).trim();
@@ -229,7 +229,7 @@ public class WifiUtil {
 	}
 	
 	/**
-	 * ¶Ô±ÈÁ½¸öipÊÇ·ñ´¦ÓÚÍ¬Ò»Íø¶Î
+	 * å¯¹æ¯”ä¸¤ä¸ªipæ˜¯å¦å¤„äºåŒä¸€ç½‘æ®µ
 	 * @param gateWay
 	 * @param serverIp
 	 * @return
