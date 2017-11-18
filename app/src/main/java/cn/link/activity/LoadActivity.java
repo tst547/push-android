@@ -14,13 +14,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import cn.link.box.App;
 import cn.link.common.MyGson;
 import cn.link.net.Base;
-import com.google.gson.reflect.TypeToken;
 
 /**
  * 主Activity
@@ -131,7 +129,7 @@ public class LoadActivity extends BaseActivity {
                 startActivity(intent);
             });
             fileBtn.setOnClickListener((View v) -> {
-                Intent intent = new Intent(LoadActivity.this, FileActivity.class);
+                Intent intent = new Intent(LoadActivity.this, FileListActivity.class);
                 if (!result) {
                     toastMsg(getBaseContext(), ConstStrings.ConnFailed);
                     pushBtn.setVisibility(View.GONE);
@@ -145,8 +143,7 @@ public class LoadActivity extends BaseActivity {
                                 res = response.body().string();
                                 if (null != response) {
                                     Base.BaseMsg<List<Base.File>> baseMsg = (Base.BaseMsg<List<Base.File>>) MyGson.getObject(res
-                                            , new TypeToken<Base.BaseMsg<List<Base.File>>>() {
-                                            }.getType());
+                                            , App.fileListType);
                                     Bundle bundle = new Bundle();
                                     bundle.putSerializable(Key.FileListKey, (Serializable) baseMsg.msg);
                                     intent.putExtras(bundle);

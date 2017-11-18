@@ -10,12 +10,14 @@ import android.app.Activity;
 import android.net.DhcpInfo;
 import android.net.wifi.WifiManager;
 import android.os.Environment;
+import android.view.View;
 import cn.link.common.MyMath;
 import cn.link.common.WifiUtil;
 import cn.link.net.download.DownLoadMsg;
 import cn.link.net.Base;
 import cn.link.net.Scanner;
 import cn.link.net.Session;
+import cn.link.net.download.ProgressTask;
 import com.google.gson.reflect.TypeToken;
 
 /**
@@ -25,13 +27,17 @@ import com.google.gson.reflect.TypeToken;
  */
 public class App {
 
-    public static List<DownLoadMsg> downloadMsgs = new ArrayList<>();
+    public static List<DownLoadMsg> downloadMsgs = new ArrayList<>();//下载信息列表
+
+    public static List<ProgressTask> taskList = new ArrayList<>();//进度条刷新任务列表
+
+    public static List<View> viewList = new ArrayList<>();//
 
     public static String SdCardPath = Environment.getExternalStorageDirectory()
             + "/";
     public static File path;
 
-    public static Type fileListType = new TypeToken<List<Base.File>>() {}.getType();
+    public static Type fileListType = new TypeToken<Base.BaseMsg<List<Base.File>>>() {}.getType();
 
     private static String broadcastAddr;// 广播地址
     private static int ServerScannerPort = 22555; //扫描端口(广播使用)

@@ -1,6 +1,8 @@
 package cn.link.common;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import cn.link.box.App;
@@ -10,9 +12,9 @@ import android.util.Log;
 public class FileUtil {
 
 	/**
-	 * ´´½¨ÎÄ¼ş¼Ğ
+	 * åˆ›å»ºæ–‡ä»¶å¤¹
 	 * 
-	 * @param file
+	 * @param filePath
 	 */
 	public static File createDirs(String filePath) {
 		File file = new File(App.path.getPath() + "/" + filePath);
@@ -31,9 +33,9 @@ public class FileUtil {
 	}
 
 	/**
-	 * ´´½¨ÎÄ¼ş
+	 * åˆ›å»ºæ–‡ä»¶
 	 * 
-	 * @param file
+	 * @param filePath
 	 */
 	public static File createFile(String filePath) {
 		File fl = new File(App.path.getPath() + "/" + filePath);
@@ -54,5 +56,28 @@ public class FileUtil {
 			return null;
 		}
 		return fl;
+	}
+
+	/**
+	 * è·å–æŒ‡å®šæ–‡ä»¶å¤§å°(å•ä½ï¼šå­—èŠ‚)
+	 * @param file
+	 * @return
+	 * @throws Exception
+	 */
+	public static long getFileSize(File file){
+		if (file == null) {
+			return 0;
+		}
+		long size = 0;
+		if (file.exists()) {
+			FileInputStream fis = null;
+			try {
+				fis = new FileInputStream(file);
+				size = fis.available();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return size;
 	}
 }

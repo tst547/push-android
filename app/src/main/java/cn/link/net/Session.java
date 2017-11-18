@@ -2,6 +2,7 @@ package cn.link.net;
 
 import cn.link.box.App;
 import cn.link.box.Key;
+import cn.link.common.FileUtil;
 import cn.link.net.download.DownLoadMsg;
 import okhttp3.*;
 
@@ -37,7 +38,7 @@ public class Session {
      * @param filePath
      * @return
      */
-    public void getFileList(String filePath, MyCallback.Netable able) {
+    public void getFileList(String filePath, OKHttpCallback.Netable able) {
         Map<String, Object> temp = new HashMap<>();
         if (null != filePath)
             temp.put(Key.FilePathKey, filePath);
@@ -49,7 +50,10 @@ public class Session {
      * @param downLoadMsg
      * @param able
      */
-    public void fileDownLoad(DownLoadMsg downLoadMsg,MyCallback.Netable able) {
+    public Call fileDownLoad(DownLoadMsg downLoadMsg,OKHttpCallback.Netable able) {
+            long size;
+            if ((size = FileUtil.getFileSize(downLoadMsg.getFile()))!=downLoadMsg.getProgress().getOffset())
+                downLoadMsg.getProgress().setOffset(size);
             OkHttpClient okHttpClient = new OkHttpClient();
             RequestBody body = new FormBody.Builder()
                     .add(Key.FilePathKey, downLoadMsg.getBaseFile().path)
@@ -65,7 +69,8 @@ public class Session {
                     .post(body)
                     .build();
             Call call = okHttpClient.newCall(request);
-            call.enqueue(new MyCallback(able));
+            call.enqueue(new OKHttpCallback(able));
+            return call;
     }
 
     /**
@@ -75,7 +80,7 @@ public class Session {
      * @param params
      * @return
      */
-    private void get(String path, Map<String, Object> params, MyCallback.Netable able) {
+    private void get(String path, Map<String, Object> params, OKHttpCallback.Netable able) {
         if (null != params)
             for (Map.Entry<String, Object> entry : params.entrySet()) {
                 if (!path.endsWith("&") && !path.contains("&"))
@@ -88,7 +93,7 @@ public class Session {
                 .url(urlBase + path)
                 .build();
         Call call = okHttpClient.newCall(request);
-        call.enqueue(new MyCallback(able));
+        call.enqueue(new OKHttpCallback(able));
     }
 
 

@@ -2,10 +2,8 @@ package cn.link.activity;
 
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.MenuItem;
 import android.widget.Toast;
-import cn.link.box.App;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -88,7 +86,7 @@ public abstract class BaseActivity extends Activity{
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.app_down:
-				Intent intent1 = new Intent(this, DLListActivity.class);
+				Intent intent1 = new Intent(this, DownListActivity.class);
 				startActivity(intent1);
 				break;
 			case R.id.app_setting:

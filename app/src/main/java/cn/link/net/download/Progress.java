@@ -31,6 +31,7 @@ public class Progress {
 	}
 
 	public void setCurrent(int current) {
-		this.current = current;
+		if (current!=this.current)
+			this.current = current;
 	}
 }

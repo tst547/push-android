@@ -9,11 +9,11 @@ import java.io.IOException;
 /**
  * Created by hanyu on 2017/11/17 0017.
  */
-public class MyCallback implements Callback {
+public class OKHttpCallback implements Callback {
 
     private Netable netable;
 
-    public MyCallback(Netable netable){
+    public OKHttpCallback(Netable netable){
         this.netable = netable;
     }
 

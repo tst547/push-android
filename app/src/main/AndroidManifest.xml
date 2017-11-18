@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="cn.link.activity.DLListActivity"
+            android:name="cn.link.activity.DownListActivity"
             android:launchMode="singleTask" >
         </activity>
         <activity android:name="cn.link.activity.SettingActivity" >
@@ -32,7 +32,7 @@
         <activity android:name="cn.link.activity.PushActivity"
                   android:launchMode="standard">
         </activity>
-        <activity android:name="cn.link.activity.FileActivity"
+        <activity android:name="cn.link.activity.FileListActivity"
                   android:launchMode="standard">
         </activity>
     </application>

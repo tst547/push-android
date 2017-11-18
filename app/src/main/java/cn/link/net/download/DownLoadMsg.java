@@ -21,7 +21,7 @@ public class DownLoadMsg {
 	
 	private File file;//下载文件手机文件
 	
-	private boolean runFlag;//下载标志
+	private volatile boolean runFlag;//下载标志
 
 	private Base.File baseFile;//主机文件信息
 

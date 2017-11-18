@@ -29,7 +29,7 @@
     <string name="PlzWait">请稍等...</string>
     <string name="Ununited">未连接</string>
     <string name="Connected">已连接</string>
-    <string name="DownLoad">开始下载</string>
+    <string name="Stream">开始下载</string>
     <string name="Detail">文件属性</string>
     <string name="Options">选项</string>
     <string name="Confirm">确定</string>
