@@ -2,11 +2,11 @@ package cn.link.net.download;
 
 import android.os.AsyncTask;
 import android.view.View;
+import android.widget.ProgressBar;
 import cn.link.activity.DownListActivity;
 import cn.link.activity.R;
 import cn.link.box.App;
 import cn.link.box.Key;
-import com.daimajia.numberprogressbar.NumberProgressBar;
 
 /**
  * 进度条刷新任务
@@ -51,7 +51,7 @@ public class ProgressTask extends AsyncTask<Integer, Integer, Integer> {
                 }
         if (null==viewHolder)
             return;
-        NumberProgressBar progressBar = viewHolder.pro;
+        ProgressBar progressBar = viewHolder.pro;
         if (progressBar.getProgress()<values[0])
             progressBar.incrementProgressBy(values[0]-progressBar.getProgress());
     }

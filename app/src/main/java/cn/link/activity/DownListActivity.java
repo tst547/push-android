@@ -15,7 +15,6 @@ import cn.link.common.MyMath;
 import cn.link.net.IOStream;
 import cn.link.net.download.DownLoadMsg;
 import cn.link.net.download.ProgressTask;
-import com.daimajia.numberprogressbar.NumberProgressBar;
 
 /**
  * 下载列表Activity
@@ -108,7 +107,7 @@ public class DownListActivity extends BaseActivity {
                 view = inflater.inflate(R.layout.down_item, null);
                 view.setTag(viewHolder);
                 TextView text = (TextView) view.findViewById(R.id.down_item_text);
-                NumberProgressBar pro = (NumberProgressBar) view.findViewById(R.id.down_pro);
+                ProgressBar pro = (ProgressBar) view.findViewById(R.id.down_pro);
                 viewHolder.pro = pro;
                 viewHolder.text = text;
                 viewHolder.text.setText(loadMsg.getFile().getName()
@@ -130,7 +129,7 @@ public class DownListActivity extends BaseActivity {
      * 缓存View数据
      */
     public class ViewHolder {
-        public NumberProgressBar pro;
+        public ProgressBar pro;
         public TextView text;
     }
 }

@@ -68,7 +68,7 @@ public abstract class BaseActivity extends Activity{
 		AlertDialog.Builder builder = new Builder(BaseActivity.this);
 		builder.setMessage(msg);
 		builder.setTitle(head);
-		builder.setPositiveButton(ConstStrings.Confirm, (dialog, which) ->{});
+		builder.setPositiveButton(ConstStrings.Confirm, (dialog, which) ->dialog.cancel());
 		builder.create().show();
 	}
 

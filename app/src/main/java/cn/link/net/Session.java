@@ -22,6 +22,10 @@ public class Session {
         this.urlBase = urlBase;
     }
 
+    public String getUrlBase(){
+        return this.urlBase;
+    }
+
     /**
      * @return
      */

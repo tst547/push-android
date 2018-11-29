@@ -1,16 +1,19 @@
 package cn.link.activity;
 
 import java.io.*;
+import java.net.URLEncoder;
 import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
 import cn.link.box.App;
 import cn.link.box.ConstStrings;
 import cn.link.box.Key;
+import cn.link.common.FileUtil;
 import cn.link.common.MyGson;
 import cn.link.net.IOStream;
 import cn.link.net.download.DownLoadMsg;
@@ -58,6 +61,21 @@ public class FileListActivity extends BaseActivity {
                         toastMsg(getBaseContext(), ConstStrings.FailedFileList);
                     }
                 }));
+            }
+            if(FileUtil.isVideo(file.name)){
+                String path = file.path;
+                try {
+                    path = URLEncoder.encode(path,"utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                String url = App.getSession().getUrlBase().concat("/video?filePath=").concat(path);
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                String type = "video/*";
+                Uri uri = Uri.parse(url);
+                intent.setDataAndType(uri,type);
+                startActivity(intent);
             }
         });
         hlv.setOnItemLongClickListener((adapterView, view, pos, n) -> {

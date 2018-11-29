@@ -80,4 +80,14 @@ public class FileUtil {
 		}
 		return size;
 	}
+
+	private static String [] videoFiles = {".avi",".mp4",".flv"};
+
+	public static boolean isVideo(String fileName){
+		for (String video:videoFiles){
+			if (fileName.contains(video))
+				return true;
+		}
+		return false;
+	}
 }
