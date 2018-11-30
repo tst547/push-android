@@ -13,6 +13,7 @@ import android.os.Environment;
 import android.view.View;
 import cn.link.common.MyMath;
 import cn.link.common.WifiUtil;
+import cn.link.net.NetWorkInfo;
 import cn.link.net.download.DownLoadMsg;
 import cn.link.net.Base;
 import cn.link.net.Scanner;
@@ -39,18 +40,25 @@ public class App {
 
     public static Type fileListType = new TypeToken<Base.BaseMsg<List<Base.File>>>() {}.getType();
 
-    private static String broadcastAddr;// 广播地址
     private static int ServerScannerPort = 22555; //扫描端口(广播使用)
-    private static String hostIp;// 主机IP
-    private static int hostPort;//  主机服务端口
-    private static String gateWay;// 网关IP
+
+    private static NetWorkInfo netWorkInfo;//网路配置信息
+
     private static String DownLoadPath = "JCdownload";// 文件到手机SD卡上的指定目录
 
     static {
+
+        netWorkInfo = new NetWorkInfo();
+
         path = new File(App.SdCardPath + App.DownLoadPath);
         if (!path.exists()) {
             path.mkdirs();
         }
+
+    }
+
+    public static NetWorkInfo getNetWorkInfo(){
+        return netWorkInfo;
     }
 
     /**
@@ -81,67 +89,26 @@ public class App {
         return fl;
     }
 
-    /**
-     * 获取网关
-     *
-     * @return
-     */
-    public static String getGateWay() {
-        return App.gateWay;
-    }
 
     /**
-     * 带参设置网关
-     *
-     * @param gateWay
-     */
-    public static void GateWay(String gateWay) {
-        App.gateWay = gateWay;
-    }
-
-    /**
-     * 获取主机IP
-     *
-     * @return
-     */
-    public static String HostIp() {
-        return hostIp;
-    }
-
-    /**
-     * 设置主机IP
-     *
-     * @param hostIp
-     */
-    public static void HostIp(String hostIp) {
-        App.hostIp = hostIp;
-    }
-
-    /**
-     * 用Android带有WifiManager 来获取 当前网络信息(主机IP,网关IP) 该方法假设网关即为主机
-     *
+     * 用Android带有WifiManager 来获取 当前网络信息
      * @param wm
      */
     public static void readWifiInfo(WifiManager wm) {
         // WifiInfo wifiInfo = wm.getConnectionInfo();
         DhcpInfo di = wm.getDhcpInfo();
-        String serverIp = WifiUtil.long2ip(di.gateway);
-        App.GateWay(serverIp);
-        App.BroadcastAddr(serverIp
-                .substring(0, serverIp.lastIndexOf(".")).concat(".255"));
-    }
-
-    private static void BroadcastAddr(String broadcastAddr) {
-        App.broadcastAddr = broadcastAddr;
+        netWorkInfo.setNetmask(di.netmask);
+        netWorkInfo.setIp(di.ipAddress);
+        netWorkInfo.setBroadcastAddr(netWorkInfo.getNetmask(),netWorkInfo.getHostIp());
+        netWorkInfo.setGateWay(di.gateway);
+        netWorkInfo.setScanPort(App.ServerScannerPort);
     }
 
     public static boolean findHost() {
-        if (null != App.hostIp && App.hostPort != 0)
+        if (0 != netWorkInfo.getIp() && netWorkInfo.getNetmask()!= 0)
             return true;
         try {
-            return new Scanner(App.broadcastAddr, App.ServerScannerPort)
-                    .init()
-                    .conn();
+            return new Scanner(App.netWorkInfo).conn();
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -149,28 +116,18 @@ public class App {
     }
 
     public static boolean scanHost() {
-        if (null != App.hostIp && App.hostPort != 0)
+        if (0 != netWorkInfo.getIp() && netWorkInfo.getNetmask()!= 0)
             return true;
         try {
-            return new Scanner(App.broadcastAddr, App.ServerScannerPort)
-                    .init()
-                    .scan();
+            return new Scanner(App.netWorkInfo).scan();
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    public static void HostPort(int port) {
-        App.hostPort = port;
-    }
-
-    public static String HostPort() {
-        return String.valueOf(App.hostPort);
-    }
-
     public static Session getSession() {
-        return Session.create();
+        return Session.create(netWorkInfo);
     }
 
     public static String getFileMsg(Base.File file) {

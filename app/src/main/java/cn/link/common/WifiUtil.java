@@ -11,13 +11,13 @@ public class WifiUtil {
 
 	public static String long2ip(long ip) {
 		StringBuffer sb = new StringBuffer();
-		sb.append(String.valueOf((int) (ip & 0xff)));
-		sb.append('.');
-		sb.append(String.valueOf((int) ((ip >> 8) & 0xff)));
+		sb.append(String.valueOf((int) ((ip >> 24) & 0xff)));
 		sb.append('.');
 		sb.append(String.valueOf((int) ((ip >> 16) & 0xff)));
 		sb.append('.');
-		sb.append(String.valueOf((int) ((ip >> 24) & 0xff)));
+		sb.append(String.valueOf((int) ((ip >> 8) & 0xff)));
+		sb.append('.');
+		sb.append(String.valueOf((int) (ip & 0xff)));
 		return sb.toString();
 	}
 

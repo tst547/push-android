@@ -1,7 +1,7 @@
 package cn.link.activity;
 
 /**
- * 文件下载设置Activity
+ * 文件传输Activity
  * @author hanyu
  *
  */

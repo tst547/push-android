@@ -73,8 +73,7 @@ public class LoadActivity extends BaseActivity {
             App.readWifiInfo(wm);//根据WIFI读取网络信息
         }
 
-        public RunNet(String ip) {
-            App.HostIp(ip);
+        public RunNet() {
         }
 
         /**
@@ -111,13 +110,13 @@ public class LoadActivity extends BaseActivity {
          */
         @Override
         protected void onPostExecute(Boolean result) {
-            Button conBtn = (Button) findViewById(R.id.button_ew);
+            Button conBtn = findViewById(R.id.button_ew);
             conBtn.setOnClickListener((v) -> {
-                new RunNet(App.getGateWay()).execute(Key.ScanKey);
+                new RunNet().execute(Key.ScanKey);
                 conBtn.setVisibility(View.GONE);
             });
-            Button pushBtn = (Button) findViewById(R.id.btn_win);
-            Button fileBtn = (Button) findViewById(R.id.btn_file);
+            Button pushBtn = findViewById(R.id.btn_win);
+            Button fileBtn = findViewById(R.id.btn_file);
             pushBtn.setOnClickListener((v) -> {
                 Intent intent = new Intent(LoadActivity.this, PushActivity.class);
                 if (!result) {

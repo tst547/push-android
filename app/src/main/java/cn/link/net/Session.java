@@ -1,6 +1,5 @@
 package cn.link.net;
 
-import cn.link.box.App;
 import cn.link.box.Key;
 import cn.link.common.FileUtil;
 import cn.link.net.download.DownLoadMsg;
@@ -29,9 +28,9 @@ public class Session {
     /**
      * @return
      */
-    public static Session create() {
+    public static Session create(NetWorkInfo netWorkInfo) {
         if (null == session) {
-            session = new Session("http://" + App.HostIp() + ":" + App.HostPort());
+            session = new Session("http://" + netWorkInfo.getIp() + ":" + netWorkInfo.getHostPort());
         }
         return session;
     }

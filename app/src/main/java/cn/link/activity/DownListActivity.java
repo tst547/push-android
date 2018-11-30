@@ -29,7 +29,7 @@ public class DownListActivity extends BaseActivity {
         super.removeTitle();
         App.viewList.clear();
         setContentView(R.layout.activity_down_list);
-        ListView lsv = (ListView) findViewById(R.id.down_load_list);
+        ListView lsv = findViewById(R.id.down_load_list);
         lsv.setAdapter(new CustomAdapter(App.downloadMsgs, App.viewList));
         lsv.setOnItemClickListener((adapterView, view, pos, n) -> {
             if (adapterView.getItemAtPosition(pos) instanceof DownLoadMsg) {
@@ -106,8 +106,8 @@ public class DownListActivity extends BaseActivity {
                 LayoutInflater inflater = DownListActivity.this.getLayoutInflater();
                 view = inflater.inflate(R.layout.down_item, null);
                 view.setTag(viewHolder);
-                TextView text = (TextView) view.findViewById(R.id.down_item_text);
-                ProgressBar pro = (ProgressBar) view.findViewById(R.id.down_pro);
+                TextView text = view.findViewById(R.id.down_item_text);
+                ProgressBar pro = view.findViewById(R.id.down_pro);
                 viewHolder.pro = pro;
                 viewHolder.text = text;
                 viewHolder.text.setText(loadMsg.getFile().getName()
