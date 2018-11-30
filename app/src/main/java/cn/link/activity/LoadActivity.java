@@ -34,7 +34,7 @@ public class LoadActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        super.removeTitle();
+        //super.removeTitle();
         setContentView(R.layout.activity_load);//加载布局   布局等资源文件都存放在res文件夹里
         new RunNet(this).execute(Key.FindKey);//尝试连接网络 RunNet是该类的内部类
     }
