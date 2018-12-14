@@ -8,6 +8,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.net.DhcpInfo;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Environment;
 import android.view.View;
@@ -97,15 +98,15 @@ public class App {
     public static void readWifiInfo(WifiManager wm) {
         // WifiInfo wifiInfo = wm.getConnectionInfo();
         DhcpInfo di = wm.getDhcpInfo();
-        netWorkInfo.setNetmask(di.netmask);
-        netWorkInfo.setIp(di.ipAddress);
-        netWorkInfo.setBroadcastAddr(netWorkInfo.getNetmask(),netWorkInfo.getHostIp());
-        netWorkInfo.setGateWay(di.gateway);
+        netWorkInfo.setNetmask(di.netmask==0?4294967040l:di.netmask);
+        netWorkInfo.setIp(WifiUtil.ip2long(WifiUtil.androidLong2ip(di.ipAddress)));
+        netWorkInfo.setBroadcastAddr(netWorkInfo.getNetmask(),netWorkInfo.getIp());
+        netWorkInfo.setGateWay(WifiUtil.ip2long(WifiUtil.androidLong2ip(di.gateway)));
         netWorkInfo.setScanPort(App.ServerScannerPort);
     }
 
     public static boolean findHost() {
-        if (0 != netWorkInfo.getIp() && netWorkInfo.getNetmask()!= 0)
+        if (0 != netWorkInfo.getHostIp() && netWorkInfo.getNetmask()!= 0)
             return true;
         try {
             return new Scanner(App.netWorkInfo).conn();

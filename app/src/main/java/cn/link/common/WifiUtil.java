@@ -3,7 +3,9 @@ package cn.link.common;
 import java.math.BigInteger;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import android.util.Log;
 
@@ -19,6 +21,43 @@ public class WifiUtil {
 		sb.append('.');
 		sb.append(String.valueOf((int) (ip & 0xff)));
 		return sb.toString();
+	}
+	public static String androidLong2ip(long ip) {
+		StringBuffer sb = new StringBuffer();
+		sb.append(String.valueOf((int) (ip & 0xff)));
+		sb.append('.');
+		sb.append(String.valueOf((int) ((ip >> 8) & 0xff)));
+		sb.append('.');
+		sb.append(String.valueOf((int) ((ip >> 16) & 0xff)));
+		sb.append('.');
+		sb.append(String.valueOf((int) ((ip >> 24) & 0xff)));
+		return sb.toString();
+	}
+
+	public static long ip2long(String ip) {
+		String[] ipArray = ip.split("\\.");
+		List ipNums = new ArrayList();
+		for (int i = 0; i < 4; ++i) {
+			ipNums.add(Long.valueOf(Long.parseLong(ipArray[i].trim())));
+		}
+		long ZhongIPNumTotal = ((Long) ipNums.get(0)).longValue() * 256L * 256L * 256L
+				+ ((Long) ipNums.get(1)).longValue() * 256L * 256L + ((Long) ipNums.get(2)).longValue() * 256L
+				+ ((Long) ipNums.get(3)).longValue();
+
+		return ZhongIPNumTotal;
+	}
+
+	public static long androidIp2long(String ip) {
+		String[] ipArray = ip.split("\\.");
+		List ipNums = new ArrayList();
+		for (int i = 0; i < 4; ++i) {
+			ipNums.add(Long.valueOf(Long.parseLong(ipArray[i].trim())));
+		}
+		long ZhongIPNumTotal = ((Long) ipNums.get(3)).longValue() * 256L * 256L * 256L
+				+ ((Long) ipNums.get(2)).longValue() * 256L * 256L + ((Long) ipNums.get(1)).longValue() * 256L
+				+ ((Long) ipNums.get(0)).longValue();
+
+		return ZhongIPNumTotal;
 	}
 
 	private final static int INADDRSZ = 4;

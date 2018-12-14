@@ -4,31 +4,43 @@ package cn.link.net;
  */
 public class NetWorkInfo {
 
-    private int ip;//自身ip地址
+    private long ip;//自身ip地址
     private int scanPort;//广播扫描端口
-    private int broadcastAddr;// 广播地址
-    private int hostIp;// 主机IP
+    private long broadcastAddr;// 广播地址
+    private long hostIp;// 主机IP
     private int hostPort;//  主机服务端口
-    private int gateWay;// 网关IP
-    private int netmask;//子网掩码
+    private long gateWay;// 网关IP
+    private long netmask;//子网掩码
 
-    public int getBroadcastAddr() {
+    public long getIp() {
+        return ip;
+    }
+
+    public void setIp(long ip) {
+        this.ip = ip;
+    }
+
+    public int getScanPort() {
+        return scanPort;
+    }
+
+    public void setScanPort(int scanPort) {
+        this.scanPort = scanPort;
+    }
+
+    public long getBroadcastAddr() {
         return broadcastAddr;
     }
 
-    public void setBroadcastAddr(int broadcastAddr) {
+    public void setBroadcastAddr(long broadcastAddr) {
         this.broadcastAddr = broadcastAddr;
     }
 
-    public void setBroadcastAddr(int netmask,int hostIp) {
-        this.broadcastAddr = (~netmask)|hostIp;
-    }
-
-    public int getHostIp() {
+    public long getHostIp() {
         return hostIp;
     }
 
-    public void setHostIp(int hostIp) {
+    public void setHostIp(long hostIp) {
         this.hostIp = hostIp;
     }
 
@@ -40,35 +52,23 @@ public class NetWorkInfo {
         this.hostPort = hostPort;
     }
 
-    public int getGateWay() {
+    public long getGateWay() {
         return gateWay;
     }
 
-    public void setGateWay(int gateWay) {
+    public void setGateWay(long gateWay) {
         this.gateWay = gateWay;
     }
 
-    public int getNetmask() {
+    public long getNetmask() {
         return netmask;
     }
 
-    public void setNetmask(int netmask) {
+    public void setNetmask(long netmask) {
         this.netmask = netmask;
     }
 
-    public int getScanPort() {
-        return scanPort;
-    }
-
-    public void setScanPort(int scanPort) {
-        this.scanPort = scanPort;
-    }
-
-    public int getIp() {
-        return ip;
-    }
-
-    public void setIp(int ip) {
-        this.ip = ip;
+    public void setBroadcastAddr(long netmask, long hostIp) {
+        this.broadcastAddr = ~netmask|hostIp;
     }
 }

@@ -81,11 +81,13 @@ public class FileUtil {
 		return size;
 	}
 
-	private static String [] videoFiles = {".avi",".mp4",".flv"};
+	private static String [] videoFiles = {
+			".avi",".mp4",".flv",".wmv",".mov",".rmvb",".rm",".mkv",".amv"
+	};
 
 	public static boolean isVideo(String fileName){
 		for (String video:videoFiles){
-			if (fileName.contains(video))
+			if (fileName.toLowerCase().contains(video))
 				return true;
 		}
 		return false;

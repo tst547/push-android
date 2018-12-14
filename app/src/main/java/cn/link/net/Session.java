@@ -2,9 +2,12 @@ package cn.link.net;
 
 import cn.link.box.Key;
 import cn.link.common.FileUtil;
+import cn.link.common.WifiUtil;
 import cn.link.net.download.DownLoadMsg;
 import okhttp3.*;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.*;
 
 /**
@@ -30,7 +33,7 @@ public class Session {
      */
     public static Session create(NetWorkInfo netWorkInfo) {
         if (null == session) {
-            session = new Session("http://" + netWorkInfo.getIp() + ":" + netWorkInfo.getHostPort());
+            session = new Session("http://" + WifiUtil.long2ip(netWorkInfo.getHostIp()) + ":" + netWorkInfo.getHostPort());
         }
         return session;
     }
@@ -45,7 +48,11 @@ public class Session {
         Map<String, Object> temp = new HashMap<>();
         if (null != filePath)
             temp.put(Key.FilePathKey, filePath);
-        get(Key.PathListKey, temp, able);
+        try {
+            get(Key.PathListKey, temp, able);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -83,13 +90,13 @@ public class Session {
      * @param params
      * @return
      */
-    private void get(String path, Map<String, Object> params, OKHttpCallback.Netable able) {
+    private void get(String path, Map<String, Object> params, OKHttpCallback.Netable able) throws UnsupportedEncodingException {
         if (null != params)
             for (Map.Entry<String, Object> entry : params.entrySet()) {
                 if (!path.endsWith("&") && !path.contains("&"))
-                    path = path.concat("?" + entry.getKey() + "=" + entry.getValue());
+                    path = path.concat("?" + entry.getKey() + "=" + URLEncoder.encode(entry.getValue().toString(),"utf-8"));
                 else
-                    path = path.concat("&" + entry.getKey() + "=" + entry.getValue());
+                    path = path.concat("&" + entry.getKey() + "=" + URLEncoder.encode(entry.getValue().toString(),"utf-8"));
             }
         OkHttpClient okHttpClient = new OkHttpClient();
         Request request = new Request.Builder()
